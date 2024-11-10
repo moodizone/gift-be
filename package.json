@@ -9,9 +9,11 @@
   },
   "dependencies": {
     "cookie-parser": "^1.4.7",
-    "express": "~4.16.1"
+    "express": "~4.16.1",
+    "http-errors": "^2.0.0"
   },
   "devDependencies": {
+    "@types/http-errors": "^2.0.4",
     "@types/cookie-parser": "^1.4.7",
     "@types/express": "^5.0.0",
     "@types/morgan": "^1.9.9",
