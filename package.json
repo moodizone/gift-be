@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon"
+    "start": "node dist/app.js",
+    "build": "npx tsc",
+    "dev": "nodemon"
   },
   "dependencies": {
     "express": "~4.16.1"
