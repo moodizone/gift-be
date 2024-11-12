@@ -6,6 +6,7 @@ import httpErrors from "http-errors";
 
 import indexRouter from "./routes/index";
 import usersRouter from "./routes/users";
+import { pool } from "./db";
 
 const port = 3002;
 const app = express();
@@ -38,6 +39,15 @@ app.use(((err, _req, res, _next) => {
 
 app.listen(port, () => {
   console.log(`App is running at port ${port}`);
+
+  pool.connect((err, client, release) => {
+    if (err) {
+      return console.error("Error acquiring client", err.stack);
+    }
+
+    console.log("Connected to the database");
+    release();
+  });
 });
 
 export default app;
