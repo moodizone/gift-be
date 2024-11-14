@@ -32,12 +32,17 @@ app.use(function (_req, _res, next) {
   next(httpErrors.NotFound());
 });
 
-// error handler
+// default error handler
 app.use(((err, _req, res, _next) => {
-  console.error(err.stack);
-  // render the error page
-  res.status(err.status || 500);
-  res.render("🚫 Something went wrong, That's all we know");
+  if (err instanceof APIError) {
+    console.error("🚫 Default APIError handler:\n", err.message);
+    res.status(err.statusCode).json({ message: err.message });
+  } else {
+    console.error("🚫 Default error handler:\n", err.stack);
+    res
+      .status(500)
+      .json({ message: "Something went wrong, That's all we know!" });
+  }
 }) as ErrorRequestHandler);
 
 app.listen(port, () => {

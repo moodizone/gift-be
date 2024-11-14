@@ -1,8 +1,9 @@
 import express from "express";
-import { pool } from "../configs/db";
+
 import { getUsers } from "../controllers/users";
+import { asyncHandler } from "../utils/asyncHandler";
 
 const router = express.Router();
-router.get("/", getUsers);
+router.get("/", asyncHandler(getUsers));
 
 export default router;

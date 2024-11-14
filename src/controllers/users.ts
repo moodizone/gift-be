@@ -6,7 +6,6 @@ export async function getUsers(
   res: Response,
   next: NextFunction
 ) {
-  try {
     const users = await getUsersService();
     res.status(200).json(users);
   } catch (error) {
