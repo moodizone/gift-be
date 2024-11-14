@@ -25,7 +25,7 @@ app.use("/assets", express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
 // page routes
-app.use("/users", usersRouter);
+app.use("/api/users", usersRouter);
 
 // wild card routes
 app.use(function (_req, _res, next) {
