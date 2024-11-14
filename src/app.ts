@@ -5,9 +5,8 @@ import cookieParser from "cookie-parser";
 import httpErrors from "http-errors";
 import { config } from "dotenv";
 
-import indexRouter from "./routes/index";
 import usersRouter from "./routes/users";
-import { pool } from "./db";
+import { pool } from "./configs/db";
 
 config();
 const port = Number(process.env.APP_PORT);
@@ -22,8 +21,10 @@ app.use(cookieParser());
 // virtual `/assets` path
 app.use("/assets", express.static(path.join(__dirname, "public")));
 
+// for parsing application/json
+app.use(express.json());
+
 // page routes
-app.use("/", indexRouter);
 app.use("/users", usersRouter);
 
 // wild card routes

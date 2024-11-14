@@ -1,18 +1,8 @@
 import express from "express";
-import { pool } from "../db";
+import { pool } from "../configs/db";
+import { getUsers } from "../controllers/users";
 
 const router = express.Router();
-router.get("/", async function (req, res, next) {
-  try {
-    await pool.query('INSERT INTO "User" (email, tel) VALUES ($1, $2)', [
-      "test_email@express.com",
-      "12344321",
-    ]);
-    res.send("successful");
-  } catch (error) {
-    console.log(error);
-    res.send("failed");
-  }
-});
+router.get("/", getUsers);
 
 export default router;
