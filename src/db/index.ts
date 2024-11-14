@@ -1,14 +1,17 @@
 import { Pool } from "pg";
+import { config } from "dotenv";
+
+config();
 
 // netstat -plnt | grep postgres
-const port = 5432;
-const host = "127.0.0.1";
+const port = Number(process.env.DB_PORT!);
+const host = process.env.DB_HOST!;
 // \du
-const user = "gift-db"; //
+const user = process.env.DB_USER!;
 // \l
-const database = "Gift-Store";
-// ALTER USER "my_app_user" WITH PASSWORD 'newpassword';
-const password = "123456";
+const database = process.env.DB_NAME!;
+// ALTER USER "my_app_user" WITH PASSWORD 'new_password';
+const password = process.env.DB_PASSWORD!;
 
 export const pool = new Pool({
   user,
