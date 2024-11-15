@@ -6,4 +6,6 @@ export interface UserType {
   tel: string | null;
   gender: GenderEnum | null;
   email: string | null;
+  password: string;
 }
+export type CreateUserType = Omit<UserType, "id">;
