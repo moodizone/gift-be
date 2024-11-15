@@ -4,6 +4,7 @@ import logger from "morgan";
 import cookieParser from "cookie-parser";
 import httpErrors from "http-errors";
 import { config } from "dotenv";
+import { ZodError } from "zod";
 
 import usersRouter from "./routes/users";
 import { pool } from "./configs/db";
@@ -32,12 +33,27 @@ app.use(function (_req, _res, next) {
   next(httpErrors.NotFound());
 });
 
-// default error handler
+// error handler
 app.use(((err, _req, res, _next) => {
+  //=====================================
+  // API Error
+  //=====================================
   if (err instanceof APIError) {
-    console.error("🚫 Default APIError handler:\n", err.message);
     res.status(err.statusCode).json({ message: err.message });
-  } else {
+  }
+  //=====================================
+  // Zod Error
+  //=====================================
+  else if (err instanceof ZodError) {
+    return res.status(400).json({
+      messages: err.errors.map((e) => ({ path: e.path, message: e.message })),
+    });
+  }
+
+  //=====================================
+  // fallback
+  //=====================================
+  else {
     console.error("🚫 Default error handler:\n", err.stack);
     res
       .status(500)
