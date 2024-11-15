@@ -1,8 +1,8 @@
 import express from "express";
 
 import { getUsers } from "../controllers/users";
-import { asyncHandler } from "../utils/asyncHandler";
-import { validateRequest } from "../validation";
+import { asyncHandler } from "../middlewares/asyncHandler";
+import { validateRequest } from "../middlewares/validate";
 import { createUserSchema } from "../validation/user";
 
 const router = express.Router();
