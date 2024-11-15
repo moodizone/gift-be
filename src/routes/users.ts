@@ -1,12 +1,11 @@
 import express from "express";
 
-import { createUser, getUsers } from "../controllers/users";
-import { asyncHandler } from "../middlewares/asyncHandler";
 import { validateRequest } from "../middlewares/validate";
 import { createUserSchema } from "../validation/user";
+import { usersController } from "../controllers/users";
 
 const router = express.Router();
-router.get("/", asyncHandler(getUsers));
-router.post("/", validateRequest(createUserSchema), asyncHandler(createUser));
+router.get("/", usersController.getUsers);
+router.post("/", validateRequest(createUserSchema), usersController.createUser);
 
 export default router;

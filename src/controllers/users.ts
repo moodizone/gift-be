@@ -2,12 +2,13 @@ import { NextFunction, Request, Response } from "express";
 
 import { createUserService, getUsersService } from "../services/users";
 import { CreateUserType } from "../types";
+import { asyncHandler } from "../middlewares/asyncHandler";
 
-export async function getUsers(_req: Request, res: Response) {
+async function getUsers(_req: Request, res: Response) {
   const users = await getUsersService();
   res.status(200).json(users);
 }
-export async function createUser(
+async function createUser(
   req: Request<unknown, unknown, CreateUserType>,
   res: Response
 ) {
@@ -15,3 +16,8 @@ export async function createUser(
   const newUser = await createUserService(payload);
   res.status(201).json(newUser);
 }
+
+export const usersController = {
+  getUsers: asyncHandler(getUsers),
+  createUser: asyncHandler(createUser),
+};
