@@ -3,6 +3,7 @@ import { DatabaseError } from "pg";
 import { createUserQuery, getUsersQuery } from "../models/users";
 import { CreateUserType } from "../types";
 import { hashPassword } from "../utils/hash";
+import { APIError } from "../utils/error";
 
 export async function getUsersService() {
   return getUsersQuery();

@@ -1,4 +1,4 @@
-class APIError extends Error {
+export class APIError extends Error {
   originalErrorObject?: unknown;
   message: string;
   statusCode: number;

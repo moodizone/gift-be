@@ -8,6 +8,7 @@ import { ZodError } from "zod";
 
 import usersRouter from "./routes/users";
 import { pool } from "./configs/db";
+import { APIError } from "./utils/error";
 
 config();
 const port = Number(process.env.APP_PORT);
