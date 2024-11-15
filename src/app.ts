@@ -8,7 +8,6 @@ import { ZodError } from "zod";
 
 import usersRouter from "./routes/users";
 import { pool } from "./configs/db";
-import { APIError } from "./utils/error";
 
 config();
 const port = Number(process.env.APP_PORT);
@@ -37,28 +36,28 @@ app.use(function (_req, _res, next) {
 // error handler
 app.use(((err, _req, res, _next) => {
   //=====================================
-  // API Error
+  // API error
   //=====================================
-  if (err instanceof APIError) {
-    res.status(err.statusCode).json({ message: err.message });
+  if (err instanceof httpErrors.HttpError) {
+    return res.status(err.status).json({
+      message: err.message,
+    });
   }
   //=====================================
   // Zod Error
   //=====================================
   else if (err instanceof ZodError) {
-    return res.status(400).json({
+    return res.status(httpErrors.BadRequest().status).json({
       messages: err.errors.map((e) => ({ path: e.path, message: e.message })),
     });
   }
 
   //=====================================
-  // fallback
+  // Fallback
   //=====================================
   else {
     console.error("🚫 Default error handler:\n", err.stack);
-    res
-      .status(500)
-      .json({ message: "Something went wrong, That's all we know!" });
+    res.sendStatus(httpErrors.InternalServerError().status);
   }
 }) as ErrorRequestHandler);
 

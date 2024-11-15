@@ -1,9 +1,9 @@
 import { DatabaseError } from "pg";
+import createHttpError from "http-errors";
 
 import { createUserQuery, getUsersQuery } from "../models/users";
 import { CreateUserType } from "../types";
 import { hashPassword } from "../utils/hash";
-import { APIError } from "../utils/error";
 
 export async function getUsersService() {
   return getUsersQuery();
@@ -22,9 +22,9 @@ export async function createUserService({
       // unique violation rule
       if (error.code === "23505") {
         if (error.constraint?.includes("email")) {
-          throw new APIError("Email already exists.", 400);
+          throw createHttpError.Conflict("Email already in use");
         } else if (error.constraint?.includes("tel")) {
-          throw new APIError("Mobile already exists.", 400);
+          throw createHttpError.Conflict("Mobile already in use");
         }
       }
     }
