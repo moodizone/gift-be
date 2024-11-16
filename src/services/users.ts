@@ -15,7 +15,7 @@ export async function createUserService({
   try {
     // encrypt password before insertion
     const hashedPassword = await hashPassword(password);
-    const result = createUserQuery({ password: hashedPassword, ...others });
+    const result = await createUserQuery({ password: hashedPassword, ...others });
     return result;
   } catch (error) {
     if (error instanceof DatabaseError) {
