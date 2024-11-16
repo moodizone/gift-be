@@ -20,10 +20,10 @@ A RESTful backend service built with **Express** and **TypeScript**. This projec
 ```plaintext
 src/
 ├── config/         # Configuration files (e.g., environment setup)
-├── controllers/    # Request handlers for specific routes
+├── controllers/    # Request handlers for specific routes (HTTP layer)
 ├── db/             # Database connection and query logic
 ├── middleware/     # Custom middleware (e.g., auth, logging)
-├── models/         # Database models
+├── models/         # Database models (queries)
 ├── types/          # TypeScript type definitions
 ├── routes/         # Route definitions
 ├── services/       # Business logic and reusable services
