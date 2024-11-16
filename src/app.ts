@@ -3,7 +3,6 @@ import path from "path";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
 import httpErrors from "http-errors";
-import { config } from "dotenv";
 
 import usersRouter from "./routes/users";
 import { pool } from "./configs/db";
