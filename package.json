@@ -2,6 +2,24 @@
   "name": "gift-be",
   "version": "0.0.0",
   "private": true,
+  "author": "Seyed Mohammad Alavi <moodizone@gmail.com>",
+  "description": "A RESTful backend service built with **Express** and **TypeScript**.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/gift-be.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "express",
+    "typescript",
+    "REST API",
+    "postgresql",
+    "backend"
+  ],
+  "homepage": "https://github.com/your-username/gift-be#readme",
+  "bugs": {
+    "url": "https://github.com/your-username/gift-be/issues"
+  },
   "scripts": {
     "start": "node dist/app.js",
     "build": "npx tsc",
