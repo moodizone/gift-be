@@ -1,5 +1,8 @@
 import { GenderEnum } from "./enum";
 
+//=====================================
+// User
+//=====================================
 export interface UserType {
   id: string;
   name: string | null;

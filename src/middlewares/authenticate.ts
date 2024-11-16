@@ -22,12 +22,16 @@ export async function authentication(
     else {
       // invalid token
       jwt.verify(result.token, result.secret, (err, decoded) => {
-        if (err)
-          return res.sendStatus(createHttpError.Unauthorized().statusCode);
-        // attach userId to request
-        // @ts-ignore
-        req.userId = decoded;
-        next();
+        if (err || !decoded || typeof decoded === "string")
+          res.sendStatus(createHttpError.Unauthorized().statusCode);
+        // check expiration
+        else if (decoded.iat && decoded.exp && decoded.iat <= decoded.exp) {
+          // @ts-ignore --> attach userId to request
+          req.userId = decoded;
+          next();
+        } else {
+          res.sendStatus(createHttpError.Unauthorized().statusCode);
+        }
       });
     }
   }
