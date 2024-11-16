@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
 import { createUserService, getUsersService } from "../services/users";
 import { CreateUserType } from "../types";
-import { asyncHandler } from "../middlewares/asyncHandler";
+import { asyncHandler } from "../middlewares/async-handler";
 
 async function getUsers(_req: Request, res: Response) {
   const users = await getUsersService();

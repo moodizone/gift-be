@@ -1,13 +1,13 @@
-import express, { ErrorRequestHandler } from "express";
+import express from "express";
 import path from "path";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
 import httpErrors from "http-errors";
 import { config } from "dotenv";
-import { ZodError } from "zod";
 
 import usersRouter from "./routes/users";
 import { pool } from "./configs/db";
+import { errorHandler } from "./middlewares/error-handler";
 
 config();
 const port = Number(process.env.APP_PORT);
@@ -34,32 +34,7 @@ app.use(function (_req, _res, next) {
 });
 
 // error handler
-app.use(((err, _req, res, _next) => {
-  //=====================================
-  // API error
-  //=====================================
-  if (err instanceof httpErrors.HttpError) {
-    return res.status(err.status).json({
-      message: err.message,
-    });
-  }
-  //=====================================
-  // Zod Error
-  //=====================================
-  else if (err instanceof ZodError) {
-    return res.status(httpErrors.BadRequest().status).json({
-      messages: err.errors.map((e) => ({ path: e.path, message: e.message })),
-    });
-  }
-
-  //=====================================
-  // Fallback
-  //=====================================
-  else {
-    console.error("🚫 Default error handler:\n", err.stack);
-    res.sendStatus(httpErrors.InternalServerError().status);
-  }
-}) as ErrorRequestHandler);
+app.use(errorHandler as express.ErrorRequestHandler);
 
 app.listen(port, () => {
   console.log(`✅ App is running at port ${port}`);
