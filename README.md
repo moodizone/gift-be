@@ -15,7 +15,6 @@ A RESTful backend service built with **Express** and **TypeScript**. This projec
 - **dotenv** for managing environment variables.
 
 ---
-a
 ## Project Structure
 
 ```plaintext
