@@ -9,6 +9,7 @@ import { pool } from "./configs/db";
 import { errorHandler } from "./middlewares/error-handler";
 import { authentication } from "./middlewares/authenticate";
 import { appPort } from "./configs/env";
+import authRouter from "./routes/auth";
 
 const app = express();
 
@@ -25,6 +26,7 @@ app.use("/assets", express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
 // page routes
+app.use("/api/auth", authRouter);
 app.use("/api/users", authentication, usersRouter);
 
 // wild card routes

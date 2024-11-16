@@ -19,3 +19,10 @@ export async function createUserQuery({
   );
   return result.rows[0];
 }
+export async function getUserByTelQuery(tel: string) {
+  const result = await pool.query<UserType>(
+    `SELECT * FROM public."User" WHERE tel = $1`,
+    [tel]
+  );
+  return result.rows;
+}

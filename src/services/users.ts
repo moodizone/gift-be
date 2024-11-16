@@ -1,7 +1,11 @@
 import { DatabaseError } from "pg";
 import createHttpError from "http-errors";
 
-import { createUserQuery, getUsersQuery } from "../models/users";
+import {
+  createUserQuery,
+  getUserByTelQuery,
+  getUsersQuery,
+} from "../models/users";
 import { CreateUserType } from "../types";
 import { hashPassword } from "../utils/hash";
 
@@ -15,7 +19,10 @@ export async function createUserService({
   try {
     // encrypt password before insertion
     const hashedPassword = await hashPassword(password);
-    const result = await createUserQuery({ password: hashedPassword, ...others });
+    const result = await createUserQuery({
+      password: hashedPassword,
+      ...others,
+    });
     return result;
   } catch (error) {
     if (error instanceof DatabaseError) {
@@ -30,4 +37,14 @@ export async function createUserService({
     }
     throw error;
   }
+}
+export async function getUserByTelService(tel: string) {
+  const result = await getUserByTelQuery(tel);
+
+  if (result.length === 0) {
+    return null;
+  } else if (result.length > 1) {
+    console.log(`❗ ${result.length} users found with same tel: ${tel}`);
+  }
+  return result[0];
 }

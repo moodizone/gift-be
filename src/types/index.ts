@@ -12,3 +12,11 @@ export interface UserType {
   password: string;
 }
 export type CreateUserType = Omit<UserType, "id">;
+export type AccountDetails = Omit<UserType, "password">;
+export interface LoginBody {
+  tel: string;
+  password: string;
+}
+export interface LoginResponse extends AccountDetails {
+  token: string;
+}
