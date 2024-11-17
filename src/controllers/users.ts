@@ -1,15 +1,15 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response } from "express";
 
 import { createUserService, getUsersService } from "../services/users";
-import { CreateUserType } from "../types";
-import { asyncHandler } from "../middlewares/asyncHandler";
+import { asyncHandler } from "../middlewares/async-handler";
+import { UserCreateBody } from "../types";
 
 async function getUsers(_req: Request, res: Response) {
   const users = await getUsersService();
   res.status(200).json(users);
 }
 async function createUser(
-  req: Request<unknown, unknown, CreateUserType>,
+  req: Request<unknown, unknown, UserCreateBody>,
   res: Response
 ) {
   const payload = req.body;

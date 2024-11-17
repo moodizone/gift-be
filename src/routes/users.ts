@@ -1,11 +1,8 @@
 import express from "express";
 
-import { validateRequest } from "../middlewares/validate";
-import { createUserSchema } from "../validation/user";
 import { usersController } from "../controllers/users";
 
-const router = express.Router();
-router.get("/", usersController.getUsers);
-router.post("/", validateRequest(createUserSchema), usersController.createUser);
+const usersRouter = express.Router();
+usersRouter.get("/", usersController.getUsers);
 
-export default router;
+export default usersRouter;

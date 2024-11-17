@@ -8,7 +8,7 @@ A RESTful backend service built with **Express** and **TypeScript**. This projec
 
 - **Express** for building the REST API.
 - **TypeScript** for type safety and better developer experience.
-- **PostgreSQL** as the database.
+- **PostgreSQL** as the database (Prisma ORM).
 - **bcrypt** for password hashing.
 - **Zod** for schema validation.
 - **Nodemon** for hot-reloading during development.
@@ -20,10 +20,9 @@ A RESTful backend service built with **Express** and **TypeScript**. This projec
 ```plaintext
 src/
 ├── config/         # Configuration files (e.g., environment setup)
-├── controllers/    # Request handlers for specific routes
-├── db/             # Database connection and query logic
+├── controllers/    # Request handlers for specific routes (HTTP layer)
 ├── middleware/     # Custom middleware (e.g., auth, logging)
-├── models/         # Database models
+├── models/         # Database models (queries)
 ├── types/          # TypeScript type definitions
 ├── routes/         # Route definitions
 ├── services/       # Business logic and reusable services

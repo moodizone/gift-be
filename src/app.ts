@@ -1,16 +1,15 @@
-import express, { ErrorRequestHandler } from "express";
+import express from "express";
 import path from "path";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
 import httpErrors from "http-errors";
-import { config } from "dotenv";
-import { ZodError } from "zod";
 
 import usersRouter from "./routes/users";
-import { pool } from "./configs/db";
+import { errorHandler } from "./middlewares/error-handler";
+import { authentication } from "./middlewares/authenticate";
+import { appPort } from "./configs/env";
+import authRouter from "./routes/auth";
 
-config();
-const port = Number(process.env.APP_PORT);
 const app = express();
 
 // logger for all http requests in dev
@@ -26,7 +25,8 @@ app.use("/assets", express.static(path.join(__dirname, "public")));
 app.use(express.json());
 
 // page routes
-app.use("/api/users", usersRouter);
+app.use("/api/auth", authRouter);
+app.use("/api/users", authentication, usersRouter);
 
 // wild card routes
 app.use(function (_req, _res, next) {
@@ -34,44 +34,10 @@ app.use(function (_req, _res, next) {
 });
 
 // error handler
-app.use(((err, _req, res, _next) => {
-  //=====================================
-  // API error
-  //=====================================
-  if (err instanceof httpErrors.HttpError) {
-    return res.status(err.status).json({
-      message: err.message,
-    });
-  }
-  //=====================================
-  // Zod Error
-  //=====================================
-  else if (err instanceof ZodError) {
-    return res.status(httpErrors.BadRequest().status).json({
-      messages: err.errors.map((e) => ({ path: e.path, message: e.message })),
-    });
-  }
+app.use(errorHandler as express.ErrorRequestHandler);
 
-  //=====================================
-  // Fallback
-  //=====================================
-  else {
-    console.error("🚫 Default error handler:\n", err.stack);
-    res.sendStatus(httpErrors.InternalServerError().status);
-  }
-}) as ErrorRequestHandler);
-
-app.listen(port, () => {
-  console.log(`✅ App is running at port ${port}`);
-
-  pool.connect((err, _client, release) => {
-    if (err) {
-      return console.error("🚫 Database connection failed:\n", err.stack);
-    }
-
-    console.log("✅ Connected to the database");
-    release();
-  });
+app.listen(appPort, () => {
+  console.log(`✅ App is running at port ${appPort}`);
 });
 
 export default app;
