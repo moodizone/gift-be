@@ -5,7 +5,6 @@ import cookieParser from "cookie-parser";
 import httpErrors from "http-errors";
 
 import usersRouter from "./routes/users";
-import { pool } from "./configs/db";
 import { errorHandler } from "./middlewares/error-handler";
 import { authentication } from "./middlewares/authenticate";
 import { appPort } from "./configs/env";
@@ -39,15 +38,6 @@ app.use(errorHandler as express.ErrorRequestHandler);
 
 app.listen(appPort, () => {
   console.log(`✅ App is running at port ${appPort}`);
-
-  pool.connect((err, _client, release) => {
-    if (err) {
-      return console.error("🚫 Database connection failed:\n", err.stack);
-    }
-
-    console.log("✅ Connected to the database");
-    release();
-  });
 });
 
 export default app;

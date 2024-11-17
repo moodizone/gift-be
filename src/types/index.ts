@@ -1,22 +1,23 @@
-import { GenderEnum } from "./enum";
+import { accountStatus, gender, userRole } from "@prisma/client";
 
-//=====================================
-// User
-//=====================================
-export interface UserType {
-  id: string;
+export interface UserCreateBody {
+  email: string;
+  password: string;
+  age?: number;
+  gender?: gender;
+  name?: string;
+  role?: userRole;
+  tel?: string;
+}
+export interface UserCreateResponse {
+  email: string;
+  age: number | null;
+  gender: gender | null;
   name: string | null;
+  profilePicture: string | null;
   tel: string | null;
-  gender: GenderEnum | null;
-  email: string | null;
-  password: string;
 }
-export type CreateUserType = Omit<UserType, "id">;
-export type AccountDetails = Omit<UserType, "password">;
-export interface LoginBody {
-  tel: string;
+export interface AuthLoginBody {
+  email: string;
   password: string;
-}
-export interface LoginResponse extends AccountDetails {
-  token: string;
 }

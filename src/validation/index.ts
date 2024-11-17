@@ -1,11 +1,13 @@
+import { gender, userRole } from "@prisma/client";
 import { z } from "zod";
-import { GenderEnum } from "../types/enum";
 
-const telSchema = z.string().min(3).max(64);
-const nameSchema = z.string().max(64).optional();
-const emailSchema = z.string().email().optional();
-const passwordSchema = z.string().min(6).max(128);
-const genderSchema = z.nativeEnum(GenderEnum).optional();
+const telSchema = z.string().min(3).max(256).optional();
+const nameSchema = z.string().max(256).optional();
+const emailSchema = z.string().email().max(256);
+const passwordSchema = z.string().min(6).max(256);
+const roleSchema = z.nativeEnum(userRole).optional();
+const genderSchema = z.nativeEnum(gender).optional();
+const ageSchema = z.number().int().positive().optional();
 
 export const createUserSchema = z.object({
   tel: telSchema,
@@ -13,8 +15,10 @@ export const createUserSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
   gender: genderSchema,
+  age: ageSchema,
+  role: roleSchema,
 });
 export const loginSchema = z.object({
-  tel: telSchema,
+  email: emailSchema,
   password: passwordSchema,
 });
