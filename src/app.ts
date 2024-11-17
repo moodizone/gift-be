@@ -4,7 +4,7 @@ import logger from "morgan";
 import cookieParser from "cookie-parser";
 import httpErrors from "http-errors";
 
-import usersRouter from "./routes/users";
+import userRouter from "./routes/user";
 import { errorHandler } from "./middlewares/error-handler";
 import { authentication } from "./middlewares/authenticate";
 import { appPort } from "./configs/env";
@@ -26,7 +26,7 @@ app.use(express.json());
 
 // page routes
 app.use("/api/auth", authRouter);
-app.use("/api/users", authentication, usersRouter);
+app.use("/api/user", authentication, userRouter);
 
 // wild card routes
 app.use(function (_req, _res, next) {
