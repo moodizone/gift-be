@@ -1,6 +1,17 @@
 import { gender, userRole } from "@prisma/client";
 import { z } from "zod";
 
+const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
+  // prevent printing list of enums as within error message
+  if (issue.code === z.ZodIssueCode.invalid_enum_value) {
+    return { message: "Invalid value. Select a valid option" };
+  }
+
+  return { message: ctx.defaultError };
+};
+
+z.setErrorMap(customErrorMap);
+
 const telSchema = z.string().min(3).max(256).optional();
 const nameSchema = z.string().max(256).optional();
 const emailSchema = z.string().email().max(256);

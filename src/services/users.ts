@@ -35,13 +35,16 @@ export async function createUserService({
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
       // unique violation rule
-      if (error.code === "P2002") {
-        // TODO
-        // if (error.constraint?.includes("email")) {
-        //   throw createHttpError.Conflict("Email already in use");
-        // } else if (error.constraint?.includes("tel")) {
-        //   throw createHttpError.Conflict("Mobile already in use");
-        // }
+      if (
+        error.code === "P2002" &&
+        error.meta &&
+        Array.isArray(error.meta.target)
+      ) {
+        if (error.meta.target.includes("email")) {
+          throw createHttpError.Conflict("Email already in use");
+        } else if (error.meta.target.includes("tel")) {
+          throw createHttpError.Conflict("Mobile already in use");
+        }
       }
     }
     throw error;

@@ -21,3 +21,13 @@ export interface AuthLoginBody {
   email: string;
   password: string;
 }
+export interface AuthLoginResponse {
+  email: string;
+  id: number;
+  tel: string | null;
+  name: string | null;
+  gender: gender | null;
+  age: number | null;
+  profilePicture: string | null;
+  token: string;
+}
