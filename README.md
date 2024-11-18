@@ -2,15 +2,23 @@
 
 A RESTful backend service built with **Express** and **TypeScript**. This project demonstrates core backend concepts such as routing, middleware, validation, and database interaction using **PostgreSQL**. It serves as a showcase of my backend development skills.
 
+## Table of Contents
+
+1. [Technologies](#technologies)
+2. [Project Structure](#project-structure)
+3. [Prerequisites](#prerequisites)
+4. [Setup and Running the App](#setup-and-running-the-app)
+5. [Scripts](#scripts)
+
 ## Technologies
 
 - **Express** for building the REST API.
 - **TypeScript** for type safety and better developer experience.
-- **PostgreSQL** as the database (Prisma ORM).
+- **PostgreSQL** as the database
 - **bcrypt** for password hashing.
 - **Zod** for schema validation.
-- **Nodemon** for hot-reloading during development.
-- **dotenv** for managing environment variables.
+- **Prisma** for database ORM (generates types and queries).
+- **Docker** for containerization and consistent development environments.
 
 ## Project Structure
 
@@ -39,34 +47,42 @@ Before you begin, make sure you have the following installed on your machine:
 
 1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/moodizone/gift-be.git
-    cd gift-be
-    docker-compose up --build
-    ```
+   ```bash
+   git clone https://github.com/moodizone/gift-be.git
+   cd gift-be
+   docker-compose up --build
+   ```
 
 2. Create an `.env` file:
 
-    ```
-    # APP
-    APP_PORT = "..."
+   ```
+   # APP
+   APP_PORT = "..."
 
-    # DATABASE
-    DB_PORT = "..."
-    DB_NAME = "..."
-    DB_USER = "..."
-    DB_PASSWORD = "..."
-    DATABASE_URL = "..." # for local development
+   # DATABASE
+   DB_PORT = "..."
+   DB_NAME = "..."
+   DB_USER = "..."
+   DB_PASSWORD = "..."
+   DATABASE_URL = "..." # for local development
 
-    # AUTH
-    SECRET_0 = "..."
-    SECRET_1 = "..."
-    SECRET_2 = "..."
-    SECRET_3 = "..."
-    SECRET_4 = "..."
-    SECRET_POSITION = "..." # Number between 0-24
-    ```
+   # AUTH
+   SECRET_0 = "..."
+   SECRET_1 = "..."
+   SECRET_2 = "..."
+   SECRET_3 = "..."
+   SECRET_4 = "..."
+   SECRET_POSITION = "..." # Number between 0-24
+   ```
+
 3. Start the containers:
-    ```
-    docker compose up --build
-    ```
+   ```
+   docker compose up --build
+   ```
+
+## Scripts
+
+- Generates the `sdk.ts` file, it can be used for FE projects that describes API input/output:
+  ```
+  npm run sdk
+  ```

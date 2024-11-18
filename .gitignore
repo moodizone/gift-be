@@ -5,3 +5,6 @@ dist
 
 .env*
 
+# used for generating sdk to be used on frontend
+sdk.ts
+prisma/interfaces.ts
