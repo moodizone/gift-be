@@ -7,7 +7,7 @@ import httpErrors from "http-errors";
 import userRouter from "./routes/user";
 import { errorHandler } from "./middlewares/error-handler";
 import { authentication } from "./middlewares/authenticate";
-import { appPort } from "./configs/env";
+import { appPort } from "./configs";
 import authRouter from "./routes/auth";
 
 const app = express();

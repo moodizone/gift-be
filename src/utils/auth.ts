@@ -7,7 +7,7 @@ import {
   secret3,
   secret4,
   secretPosition,
-} from "../configs/env";
+} from "../configs";
 
 const secrets = [secret0, secret1, secret2, secret3, secret4];
 
