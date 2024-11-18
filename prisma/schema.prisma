@@ -4,6 +4,11 @@ generator client {
   engineType = "bindary"
 }
 
+generator typescriptInterfaces {
+  provider = "prisma-generator-typescript-interfaces"
+  enumType = "enum"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
