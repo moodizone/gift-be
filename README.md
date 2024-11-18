@@ -56,6 +56,7 @@ Before you begin, make sure you have the following installed on your machine:
     DB_NAME = "..."
     DB_USER = "..."
     DB_PASSWORD = "..."
+    DATABASE_URL = "..." # for local development
 
     # AUTH
     SECRET_0 = "..."
@@ -63,9 +64,7 @@ Before you begin, make sure you have the following installed on your machine:
     SECRET_2 = "..."
     SECRET_3 = "..."
     SECRET_4 = "..."
-
-    # Number between 0-24
-    SECRET_POSITION = "..."
+    SECRET_POSITION = "..." # Number between 0-24
     ```
 3. Start the containers:
     ```
