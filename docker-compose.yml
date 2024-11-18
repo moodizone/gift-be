@@ -1,0 +1,55 @@
+# defines the different containers (or services) you will run
+services:
+  app:
+    container_name: Express
+    build:
+      # directory in which Docker will look for files to build the image
+      context: .
+      # instructions to build the Docker image
+      dockerfile: Dockerfile
+    ports:
+      # local:container
+      - "${APP_PORT}:${APP_PORT}"
+    # persist data and sync files between the host and the container
+    volumes:
+      # mount current directory (Express's root) into the `/app` directory inside the container.
+      # This ensures that any changes make to the source code on the host machine
+      # will be reflected into the container without needing to rebuild the image.
+      - .:/app
+      # ensures that the `node_modules` directory inside the container
+      # is not overwritten by host machine’s node_modules because node modules
+      # can differ between your local machine and the container (especially with different OSes)
+      - /app/node_modules
+    environment:
+      NODE_ENV: development
+      APP_PORT: ${APP_PORT}
+      AUTH_SECRET_KEY_0: ${SECRET_0}
+      AUTH_SECRET_KEY_1: ${SECRET_1}
+      AUTH_SECRET_KEY_2: ${SECRET_2}
+      AUTH_SECRET_KEY_3: ${SECRET_3}
+      AUTH_SECRET_KEY_4: ${SECRET_4}
+      AUTH_SECRET_POSITION: ${SECRET_POSITION}
+      # 127.0.0.1 (localhost), which refers to the host machine, not the Docker network.
+      # `db` container is running on Docker's internal network, and
+      # 127.0.0.1 from inside the app container would not reach the db container.
+      # need to connect to the database via the service name (db),
+      # which Docker Compose uses as a hostname for internal networking
+      DATABASE_URL: postgresql://${DB_USER}:${DB_PASSWORD}@db:${DB_PORT}/${DB_NAME}?schema=public
+    command: npm run dev
+  db:
+    container_name: Postgres
+    image: postgres:16
+    restart: always
+    ports:
+      # local:container
+      - "5434:${DB_PORT}"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      # `/var/lib/postgresql/data` is where PostgreSQL stores its database files.
+      # by mapping it to `pgdata`, any data stored in the database will persist even if developer stop or delete the Postgres container.
+      - pgdata:/var/lib/postgresql/data
+volumes:
+  pgdata:

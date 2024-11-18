@@ -23,7 +23,6 @@
   "scripts": {
     "start": "node dist/app.js",
     "build": "npx tsc",
-    "dump": "npx prisma db pull",
     "dev": "nodemon"
   },
   "dependencies": {
