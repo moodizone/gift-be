@@ -3,6 +3,7 @@ import path from "path";
 import logger from "morgan";
 import cookieParser from "cookie-parser";
 import httpErrors from "http-errors";
+import cors from "cors";
 
 import userRouter from "./routes/user";
 import { errorHandler } from "./middlewares/error-handler";
@@ -11,6 +12,9 @@ import { appPort } from "./configs";
 import authRouter from "./routes/auth";
 
 const app = express();
+
+// for parsing application/json
+app.use(express.json());
 
 // logger for all http requests in dev
 app.use(logger("dev"));
@@ -21,8 +25,14 @@ app.use(cookieParser());
 // virtual `/assets` path
 app.use("/assets", express.static(path.join(__dirname, "public")));
 
-// for parsing application/json
-app.use(express.json());
+// enable CORS for a specific origin (Next.js app on port 3006)
+app.use(
+  cors({
+    origin: "http://localhost:3006",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 // page routes
 app.use("/api/auth", authRouter);
