@@ -31,3 +31,6 @@ export interface AuthLoginResponse {
   profilePicture: string | null;
   token: string;
 }
+export interface AuthEmailAvailabilityBody {
+  email: string;
+}
