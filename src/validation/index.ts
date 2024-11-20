@@ -33,3 +33,6 @@ export const loginSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
 });
+export const emailAvailabilitySchema = z.object({
+  email: emailSchema,
+});

@@ -23,14 +23,14 @@ export async function authentication(
       // invalid token
       jwt.verify(result.token, result.secret, (err, decoded) => {
         if (err || !decoded || typeof decoded === "string")
-          res.sendStatus(createHttpError.Unauthorized().statusCode);
+          res.sendStatus(createHttpError.Unauthorized().status);
         // check expiration
         else if (decoded.iat && decoded.exp && decoded.iat <= decoded.exp) {
           // @ts-ignore --> attach userId to request
           req.userId = decoded;
           next();
         } else {
-          res.sendStatus(createHttpError.Unauthorized().statusCode);
+          res.sendStatus(createHttpError.Unauthorized().status);
         }
       });
     }
