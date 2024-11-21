@@ -1,5 +1,7 @@
 import { accountStatus, gender, userRole } from "@prisma/client";
-
+export interface ErrorType {
+  message: string | Array<Record<string, string>>;
+}
 export interface UserCreateBody {
   email: string;
   password: string;
