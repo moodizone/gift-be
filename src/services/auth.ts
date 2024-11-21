@@ -12,7 +12,8 @@ export async function authLoginService(email: string, password: string) {
 
   // there is no user associated with provided email
   if (!user) {
-    throw createHttpError.NotFound();
+    // avoid explicitly confirming whether the email exists for security reasons
+    throw createHttpError.Unauthorized();
   } else {
     const verify = await verifyPassword(password, user.password);
 

@@ -33,6 +33,6 @@ export async function errorHandler(
   else {
     const error = httpErrors.InternalServerError();
     console.error("🚫 Default error handler:\n", err?.stack);
-    res.send(error.statusCode).json({ message: error.message });
+    res.status(error.statusCode).json({ message: error.message });
   }
 }
