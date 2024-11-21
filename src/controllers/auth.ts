@@ -26,9 +26,10 @@ async function emailAvailability(
   const result = await getUserByEmailService(email);
 
   if (!result) {
-    res.sendStatus(200);
+    res.status(200).json({});
   } else {
-    res.sendStatus(createHttpError.Conflict().status);
+    const error = createHttpError.Conflict();
+    res.status(error.statusCode).json({ message: error.message });
   }
 }
 

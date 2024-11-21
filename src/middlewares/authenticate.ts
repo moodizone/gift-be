@@ -11,26 +11,27 @@ export async function authentication(
 ) {
   const authHeader = req.headers["authorization"];
   const rawToken = authHeader && authHeader.split(" ")[1];
+  const error = createHttpError.Unauthorized();
 
   // if token not presented
-  if (!rawToken) res.sendStatus(createHttpError.Unauthorized().status);
+  if (!rawToken) res.send(error.statusCode).json({ message: error.message });
   else {
     const result = extractSecret(rawToken);
 
     // invalid secret position
-    if (!result) res.sendStatus(createHttpError.Unauthorized().status);
+    if (!result) res.send(error.statusCode).json({ message: error.message });
     else {
       // invalid token
       jwt.verify(result.token, result.secret, (err, decoded) => {
         if (err || !decoded || typeof decoded === "string")
-          res.sendStatus(createHttpError.Unauthorized().status);
+          res.send(error.statusCode).json({ message: error.message });
         // check expiration
         else if (decoded.iat && decoded.exp && decoded.iat <= decoded.exp) {
           // @ts-ignore --> attach userId to request
           req.userId = decoded;
           next();
         } else {
-          res.sendStatus(createHttpError.Unauthorized().status);
+          res.send(error.statusCode).json({ message: error.message });
         }
       });
     }

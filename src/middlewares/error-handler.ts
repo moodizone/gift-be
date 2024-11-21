@@ -21,7 +21,9 @@ export async function errorHandler(
   //=====================================
   else if (err instanceof ZodError) {
     return res.status(httpErrors.BadRequest().status).json({
-      messages: err.errors.map((e) => ({ path: e.path, message: e.message })),
+      message: err.errors.map((e) => ({
+        [e.path.join("-")]: e.message,
+      })),
     });
   }
 
@@ -29,7 +31,8 @@ export async function errorHandler(
   // Fallback
   //=====================================
   else {
+    const error = httpErrors.InternalServerError();
     console.error("🚫 Default error handler:\n", err?.stack);
-    res.sendStatus(httpErrors.InternalServerError().status);
+    res.send(error.statusCode).json({ message: error.message });
   }
 }
