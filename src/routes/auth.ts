@@ -14,7 +14,7 @@ authRouter.post("/login", validateRequest(loginSchema), authController.login);
 authRouter.post(
   "/register",
   validateRequest(createUserSchema),
-  usersController.createUser
+  authController.register
 );
 authRouter.post(
   "/email-availability",

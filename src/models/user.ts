@@ -1,28 +1,15 @@
 import prisma from "../../prisma/client";
-import { UserCreateBody } from "../types";
+import { AuthRegisterBody } from "../types";
 
 export async function getUsersQuery() {
   const users = await prisma.user.findMany();
   return users;
 }
-export async function createUserQuery({
-  email,
-  password,
-  age,
-  gender,
-  name,
-  role,
-  tel,
-}: UserCreateBody) {
+export async function createUserQuery({ email, password }: AuthRegisterBody) {
   const user = await prisma.user.create({
     data: {
       email,
       password,
-      age,
-      gender,
-      name,
-      role,
-      tel,
     },
   });
   return user;
