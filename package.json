@@ -24,7 +24,7 @@
     "start": "node dist/app.js",
     "build": "npx tsc",
     "dev": "nodemon",
-    "sdk": "npx prisma generate && node codeGen.js"
+    "sdk": "npx prisma db pull && npx prisma generate && node codeGen.js"
   },
   "dependencies": {
     "@prisma/client": "^5.22.0",

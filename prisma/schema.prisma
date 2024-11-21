@@ -1,7 +1,7 @@
 generator client {
-  provider = "prisma-client-js"
-  binaryTargets = ["native","linux-musl"]
-  engineType = "bindary"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "linux-musl"]
+  engineType    = "bindary"
 }
 
 generator typescriptInterfaces {
@@ -26,6 +26,7 @@ model User {
   age            Int?
   profilePicture String?
   accountStatus  accountStatus? @default(active)
+  language       language?      @default(fa)
 }
 
 enum gender {
@@ -43,4 +44,9 @@ enum accountStatus {
   active
   deactive
   suspended
+}
+
+enum language {
+  en
+  fa
 }
