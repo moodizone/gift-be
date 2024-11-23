@@ -1,4 +1,4 @@
-import { accountStatus, gender, userRole } from "@prisma/client";
+import { accountStatus, gender, language, userRole } from "@prisma/client";
 export interface ErrorType {
   message: string | Array<Record<string, string>>;
 }
@@ -19,6 +19,7 @@ export interface AuthLoginResponse {
   age: number | null;
   profilePicture: string | null;
   token: string;
+  language: language | null;
 }
 export interface AuthEmailAvailabilityBody {
   email: string;
