@@ -27,11 +27,13 @@ model User {
   profilePicture String?
   accountStatus  accountStatus? @default(active)
   language       language?      @default(fa)
+  product Product[]
+  reviews Review[]
 }
 
 model Product {
   id                  Int                   @id @default(autoincrement())
-  title               String
+  title               String @db.VarChar(256)
   description         String?
   images              Json
   priceId             Float?
@@ -41,27 +43,42 @@ model Product {
   isActive            Boolean               @default(true)
   categoryId          Int?
   stock               Int?
-  availability        String?
   rating              Float?
-  reviewsCount        Int?
   discount            Float?
+  createBy Int
   createdAt           DateTime              @default(now())
   updatedAt           DateTime              @updatedAt
+  tags                ProductTag[]
+  reviews Review[]
+  priceHistory PriceHistory[]
+  
+  creator             User             @relation(fields: [createBy], references: [id])
   category            Category?             @relation(fields: [categoryId], references: [id])
   source              Source?               @relation(fields: [sourceId], references: [id])
-  ProductPriceHistory ProductPriceHistory[]
-  tags                TagsOnProducts[]
+}
+
+model Review{
+  id         Int      @id @default(autoincrement())
+  productId Int
+  author Int
+  content String
+  createdAt           DateTime              @default(now())
+  updatedAt   DateTime @updatedAt
+  isChecked Boolean               @default(false)
+
+  product Product @relation(fields: [productId], references: [id])
+  user User @relation(fields: [author], references: [id])
 }
 
 model Category {
   id               Int        @id @default(autoincrement())
   name             String
-  parentCategoryId Int?
+  superCategory Int?
+  subCategories   Int[]
   createdAt        DateTime   @default(now())
   updatedAt        DateTime   @updatedAt
-  subCategoryIds   Int[]
-  parentCategory   Category?  @relation("CategoryToSubcategory", fields: [parentCategoryId], references: [id])
-  subCategories    Category[] @relation("CategoryToSubcategory")
+  parentCategory   Category?  @relation("CategoryToSubcategory", fields: [superCategory], references: [id])
+  childCategories    Category[] @relation("CategoryToSubcategory")
   products         Product[]
 }
 
@@ -75,7 +92,7 @@ model Source {
   products      Product[]
 }
 
-model ProductPriceHistory {
+model PriceHistory {
   id         Int      @id @default(autoincrement())
   productId  Int
   price      Float
@@ -83,17 +100,17 @@ model ProductPriceHistory {
   product    Product  @relation(fields: [productId], references: [id])
 }
 
-model ProductTag {
+model Tag {
   id       Int              @id @default(autoincrement())
   label    String
-  products TagsOnProducts[]
+  products ProductTag[]
 }
 
-model TagsOnProducts {
+model ProductTag {
   tagId     Int
   productId Int
   product   Product    @relation(fields: [productId], references: [id])
-  tag       ProductTag @relation(fields: [tagId], references: [id])
+  tag       Tag @relation(fields: [tagId], references: [id])
 
   @@id([tagId, productId])
 }
