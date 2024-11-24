@@ -27,59 +27,57 @@ model User {
   profilePicture String?
   accountStatus  accountStatus? @default(active)
   language       language?      @default(fa)
-  product Product[]
-  reviews Review[]
+  product        Product[]
+  reviews        Review[]
 }
 
 model Product {
-  id                  Int                   @id @default(autoincrement())
-  title               String @db.VarChar(256)
-  description         String?
-  images              Json
-  priceId             Float?
-  sourceId            Int?
-  sourceProductId     String?
-  scrapedAt           DateTime?
-  isActive            Boolean               @default(true)
-  categoryId          Int?
-  stock               Int?
-  rating              Float?
-  discount            Float?
-  createBy Int
-  createdAt           DateTime              @default(now())
-  updatedAt           DateTime              @updatedAt
-  tags                ProductTag[]
-  reviews Review[]
-  priceHistory PriceHistory[]
-  
-  creator             User             @relation(fields: [createBy], references: [id])
-  category            Category?             @relation(fields: [categoryId], references: [id])
-  source              Source?               @relation(fields: [sourceId], references: [id])
+  id              Int            @id @default(autoincrement())
+  title           String         @db.VarChar(256)
+  description     String?
+  images          Json
+  priceId         Float?
+  sourceId        Int?
+  sourceProductId String?
+  scrapedAt       DateTime?
+  isActive        Boolean        @default(true)
+  categoryId      Int?
+  stock           Int?
+  rating          Float?
+  discount        Float?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  createBy        Int
+  priceHistory    PriceHistory[]
+  category        Category?      @relation(fields: [categoryId], references: [id])
+  creator         User           @relation(fields: [createBy], references: [id])
+  source          Source?        @relation(fields: [sourceId], references: [id])
+  tags            ProductTag[]
+  reviews         Review[]
 }
 
-model Review{
-  id         Int      @id @default(autoincrement())
+model Review {
+  id        Int      @id @default(autoincrement())
   productId Int
-  author Int
-  content String
-  createdAt           DateTime              @default(now())
-  updatedAt   DateTime @updatedAt
-  isChecked Boolean               @default(false)
-
-  product Product @relation(fields: [productId], references: [id])
-  user User @relation(fields: [author], references: [id])
+  author    Int
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isChecked Boolean  @default(false)
+  user      User     @relation(fields: [author], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
 }
 
 model Category {
-  id               Int        @id @default(autoincrement())
-  name             String
-  superCategory Int?
+  id              Int        @id @default(autoincrement())
+  name            String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
   subCategories   Int[]
-  createdAt        DateTime   @default(now())
-  updatedAt        DateTime   @updatedAt
-  parentCategory   Category?  @relation("CategoryToSubcategory", fields: [superCategory], references: [id])
-  childCategories    Category[] @relation("CategoryToSubcategory")
-  products         Product[]
+  superCategory   Int?
+  parentCategory  Category?  @relation("CategoryToSubcategory", fields: [superCategory], references: [id])
+  childCategories Category[] @relation("CategoryToSubcategory")
+  products        Product[]
 }
 
 model Source {
@@ -101,16 +99,16 @@ model PriceHistory {
 }
 
 model Tag {
-  id       Int              @id @default(autoincrement())
+  id       Int          @id @default(autoincrement())
   label    String
   products ProductTag[]
 }
 
 model ProductTag {
-  tagId     Int
   productId Int
-  product   Product    @relation(fields: [productId], references: [id])
-  tag       Tag @relation(fields: [tagId], references: [id])
+  tagId     Int
+  product   Product @relation(fields: [productId], references: [id])
+  tag       Tag     @relation(fields: [tagId], references: [id])
 
   @@id([tagId, productId])
 }
