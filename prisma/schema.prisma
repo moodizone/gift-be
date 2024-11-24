@@ -29,6 +29,74 @@ model User {
   language       language?      @default(fa)
 }
 
+model Product {
+  id              Int       @id @default(autoincrement())
+  title           String
+  description     String?
+  images          Json
+  priceId         Float?
+  sourceId        Int?
+  sourceProductId String?
+  scrapedAt       DateTime?
+  isActive        Boolean   @default(true)
+  categoryId      Int?
+  stock           Int?
+  availability    String?
+  rating          Float?
+  reviewsCount    Int?
+  discount        Float?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // relations
+  category            Category?             @relation(fields: [categoryId], references: [id])
+  source              Source?               @relation(fields: [sourceId], references: [id])
+  ProductPriceHistory ProductPriceHistory[]
+}
+
+model Category {
+  id               Int      @id @default(autoincrement())
+  name             String
+  parentCategoryId Int?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  // relations
+  // subcategories   Category[] @relation("CategoryToSubcategory")
+  // parentCategory  Category?  @relation("CategoryToSubcategory", fields: [parentCategoryId], references: [id])
+  products Product[]
+}
+
+model Source {
+  id            Int       @id @default(autoincrement())
+  name          String
+  url           String
+  lastScrapedAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  products Product[]
+}
+
+model ProductPriceHistory {
+  id         Int      @id @default(autoincrement())
+  productId  Int
+  price      Float
+  recordedAt DateTime @default(now())
+
+  // relations
+  product Product @relation(fields: [productId], references: [id])
+}
+
+model ProductTag {
+  id        Int    @id @default(autoincrement())
+  productId Int
+  tag       String
+
+  // relations
+  // product         Product   @relation(fields: [productId], references: [id])
+}
+
 enum gender {
   male
   female
