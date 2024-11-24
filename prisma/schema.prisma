@@ -30,54 +30,49 @@ model User {
 }
 
 model Product {
-  id              Int       @id @default(autoincrement())
-  title           String
-  description     String?
-  images          Json
-  priceId         Float?
-  sourceId        Int?
-  sourceProductId String?
-  scrapedAt       DateTime?
-  isActive        Boolean   @default(true)
-  categoryId      Int?
-  stock           Int?
-  availability    String?
-  rating          Float?
-  reviewsCount    Int?
-  discount        Float?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  tags TagsOnProducts[]
-
-  // relations
+  id                  Int                   @id @default(autoincrement())
+  title               String
+  description         String?
+  images              Json
+  priceId             Float?
+  sourceId            Int?
+  sourceProductId     String?
+  scrapedAt           DateTime?
+  isActive            Boolean               @default(true)
+  categoryId          Int?
+  stock               Int?
+  availability        String?
+  rating              Float?
+  reviewsCount        Int?
+  discount            Float?
+  createdAt           DateTime              @default(now())
+  updatedAt           DateTime              @updatedAt
   category            Category?             @relation(fields: [categoryId], references: [id])
   source              Source?               @relation(fields: [sourceId], references: [id])
   ProductPriceHistory ProductPriceHistory[]
+  tags                TagsOnProducts[]
 }
 
 model Category {
-  id               Int      @id @default(autoincrement())
+  id               Int        @id @default(autoincrement())
   name             String
   parentCategoryId Int?
-  subCategoryIds Int[]
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  
-  // relations
-  subCategories Category[] @relation("CategoryToSubcategory")
-  parentCategory Category? @relation("CategoryToSubcategory",fields: [parentCategoryId], references: [id])
-  products Product[]
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  subCategoryIds   Int[]
+  parentCategory   Category?  @relation("CategoryToSubcategory", fields: [parentCategoryId], references: [id])
+  subCategories    Category[] @relation("CategoryToSubcategory")
+  products         Product[]
 }
 
 model Source {
-  id                Int       @id @default(autoincrement())
-  name              String
-  url               String
-  lastScrapedAt     DateTime? 
-  createdAt         DateTime  @default(now())
-  updatedAt         DateTime  @updatedAt
-
-  products Product[]
+  id            Int       @id @default(autoincrement())
+  name          String
+  url           String
+  lastScrapedAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  products      Product[]
 }
 
 model ProductPriceHistory {
@@ -85,24 +80,21 @@ model ProductPriceHistory {
   productId  Int
   price      Float
   recordedAt DateTime @default(now())
-
-  // relations
-  product Product @relation(fields: [productId], references: [id])
+  product    Product  @relation(fields: [productId], references: [id])
 }
 
 model ProductTag {
-  id        Int    @id @default(autoincrement())
-  label       String
+  id       Int              @id @default(autoincrement())
+  label    String
   products TagsOnProducts[]
 }
 
-model TagsOnProducts{
-  tagId Int 
+model TagsOnProducts {
+  tagId     Int
   productId Int
-  
-  // relations
-  product Product @relation(fields: [productId],references: [id])
-  tag ProductTag @relation(fields: [tagId],references: [id])
+  product   Product    @relation(fields: [productId], references: [id])
+  tag       ProductTag @relation(fields: [tagId], references: [id])
+
   @@id([tagId, productId])
 }
 
