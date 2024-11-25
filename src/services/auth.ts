@@ -7,7 +7,10 @@ import { generateAccessToken } from "../utils/auth";
 import { AuthLoginResponse, AuthRegisterBody } from "../types";
 import { createUserQuery } from "../models/user";
 
-export async function authLoginService(email: string, password: string) {
+export async function authLoginService(
+  email: string,
+  password: string
+): Promise<AuthLoginResponse> {
   const user = await getUserByEmailService(email);
 
   // there is no user associated with provided email
@@ -24,9 +27,20 @@ export async function authLoginService(email: string, password: string) {
       const token = generateAccessToken(`${user.id}`);
 
       // filter sensitive data
-      const { password, createAt, role, accountStatus, ...others } = user;
+      const { tel, name, email, gender, language, profilePicture, age, id } =
+        user;
 
-      return { ...others, token };
+      return {
+        tel,
+        name,
+        email,
+        gender,
+        token,
+        language,
+        profilePicture,
+        age,
+        id,
+      };
     }
   }
 }
@@ -44,13 +58,26 @@ export async function authRegisterService({
     });
     const token = generateAccessToken(`${newUser.id}`);
     const {
-      password: _pwd,
-      createAt,
-      role,
-      accountStatus,
-      ...others
+      tel,
+      name,
+      email: _email,
+      gender,
+      language,
+      profilePicture,
+      age,
+      id,
     } = newUser;
-    return { ...others, token };
+    return {
+      tel,
+      name,
+      email: _email,
+      gender,
+      language,
+      profilePicture,
+      age,
+      id,
+      token,
+    };
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
       // unique violation rule
