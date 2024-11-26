@@ -8,3 +8,5 @@ dist
 # used for generating sdk to be used on frontend
 sdk.ts
 prisma/interfaces.ts
+
+.vscode
