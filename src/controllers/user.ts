@@ -1,12 +1,18 @@
 import { Request, Response } from "express";
 
-import { getUsersService } from "../services/user";
+import { updateUserService } from "../services/user";
 import { asyncHandler } from "../middlewares/async-handler";
+import { UserUpdateBody, UserUpdateResponse } from "../types";
 
-async function getUsers(_req: Request, res: Response) {
-  const users = await getUsersService();
-  res.status(200).json(users);
+async function updateUser(
+  req: Request<{ id: number }, unknown, UserUpdateBody>,
+  res: Response<UserUpdateResponse>
+) {
+  const { id } = req.params;
+  const user = await updateUserService(id, req.body);
+  res.status(200).json(user);
 }
+
 export const usersController = {
-  getUsers: asyncHandler(getUsers),
+  updateUser: asyncHandler(updateUser),
 };

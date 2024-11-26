@@ -1,10 +1,6 @@
 import prisma from "../../prisma/client";
-import { AuthRegisterBody } from "../types";
+import { AuthRegisterBody, UserUpdateBody } from "../types";
 
-export async function getUsersQuery() {
-  const users = await prisma.user.findMany();
-  return users;
-}
 export async function createUserQuery({ email, password }: AuthRegisterBody) {
   const user = await prisma.user.create({
     data: {
@@ -19,6 +15,21 @@ export async function getUserByEmailQuery(email: string) {
     where: {
       email,
     },
+  });
+  return user;
+}
+export async function getUserByIdQuery(id: number) {
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+  return user;
+}
+export async function updateUserQuery(id: number, data: UserUpdateBody) {
+  const user = await prisma.user.update({
+    where: { id },
+    data,
   });
   return user;
 }

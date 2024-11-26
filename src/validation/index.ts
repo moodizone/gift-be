@@ -36,3 +36,9 @@ export const loginSchema = z.object({
 export const emailAvailabilitySchema = z.object({
   email: emailSchema,
 });
+export const updateUserSchema = z.object({
+  tel: telSchema,
+  name: nameSchema,
+  gender: genderSchema,
+  age: ageSchema,
+});

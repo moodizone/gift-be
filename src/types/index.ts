@@ -31,4 +31,4 @@ export interface UserUpdateBody {
   gender?: gender;
   age?: number;
 }
-export type UserUpdateResponse = AuthLoginResponse;
+export type UserUpdateResponse = Omit<AuthLoginResponse, "token">;
