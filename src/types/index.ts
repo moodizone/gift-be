@@ -12,7 +12,7 @@ export interface AuthLoginResponse {
   tel: string | null;
   name: string | null;
   gender: gender | null;
-  age: number | null;
+  age: Date | null;
   profilePicture: string | null;
   token: string;
   language: language | null;
@@ -29,6 +29,6 @@ export interface UserUpdateBody {
   tel?: string;
   name?: string;
   gender?: gender;
-  age?: number;
+  age?: Date;
 }
 export type UserUpdateResponse = Omit<AuthLoginResponse, "token">;

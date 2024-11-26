@@ -1,3 +1,4 @@
+const { log } = require("console");
 const fs = require("fs");
 const path = require("path");
 
@@ -29,17 +30,13 @@ function readTypeFile() {
 
     const fileContent = fs.readFileSync(typeFile, "utf-8");
 
-    // extract all exported types and enums
-    const exportedTypesRegex =
-      /export\s+(type|interface|enum)\s+\w[\w\d]*\s*{[^}]*}|\w[\w\d]*\s*=\s*\{[^}]*\};/g;
-    const exportedTypes = fileContent.match(exportedTypesRegex);
+    // remove import statements using a regex
+    const contentWithoutImports = fileContent
+      .split("\n")
+      .filter((line) => !line.trim().startsWith("import"))
+      .join("\n");
 
-    if (!exportedTypes) {
-      console.log("No exported types found.");
-      return;
-    }
-
-    return exportedTypes.join("\n\n").trim();
+    return contentWithoutImports;
   } catch (error) {
     console.error(`🚫 Error reading the file:\n ${error}`);
     return;
