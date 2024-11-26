@@ -21,15 +21,24 @@ export async function updateUserService(
     throw createHttpError.NotFound();
   }
 
-  const { age, email, gender, language, name, profilePicture, tel } =
-    await updateUserQuery(id, payload);
+  const {
+    birthday,
+    email,
+    gender,
+    language,
+    firstName,
+    lastName,
+    profilePicture,
+    tel,
+  } = await updateUserQuery(id, payload);
   return {
-    age,
+    birthday,
     email,
     gender,
     id,
     language,
-    name,
+    firstName,
+    lastName,
     profilePicture,
     tel,
   };

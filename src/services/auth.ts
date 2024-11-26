@@ -4,7 +4,11 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { getUserByEmailService } from "./user";
 import { hashPassword, verifyPassword } from "../utils/hash";
 import { generateAccessToken } from "../utils/auth";
-import { AuthLoginResponse, AuthRegisterBody, AuthRegisterResponse } from "../types";
+import {
+  AuthLoginResponse,
+  AuthRegisterBody,
+  AuthRegisterResponse,
+} from "../types";
 import { createUserQuery } from "../models/user";
 
 export async function authLoginService(
@@ -27,18 +31,28 @@ export async function authLoginService(
       const token = generateAccessToken(`${user.id}`);
 
       // filter sensitive data
-      const { tel, name, email, gender, language, profilePicture, age, id } =
-        user;
+      const {
+        tel,
+        firstName,
+        lastName,
+        email,
+        gender,
+        language,
+        profilePicture,
+        birthday,
+        id,
+      } = user;
 
       return {
         tel,
-        name,
+        firstName,
+        lastName,
         email,
         gender,
         token,
         language,
         profilePicture,
-        age,
+        birthday,
         id,
       };
     }
@@ -59,22 +73,24 @@ export async function authRegisterService({
     const token = generateAccessToken(`${newUser.id}`);
     const {
       tel,
-      name,
+      firstName,
+      lastName,
       email: _email,
       gender,
       language,
       profilePicture,
-      age,
+      birthday,
       id,
     } = newUser;
     return {
       tel,
-      name,
+      firstName,
+      lastName,
       email: _email,
       gender,
       language,
       profilePicture,
-      age,
+      birthday,
       id,
       token,
     };
