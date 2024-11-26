@@ -1,4 +1,5 @@
 import { gender, language } from "@prisma/client";
+
 export interface ErrorType {
   message: string | Array<Record<string, string>>;
 }
@@ -13,7 +14,7 @@ export interface AuthLoginResponse {
   firstName: string | null;
   lastName: string | null;
   gender: gender | null;
-  birthday: Date | null;
+  birthday: string | null;
   profilePicture: string | null;
   token: string;
   language: language | null;
@@ -31,6 +32,6 @@ export interface UserUpdateBody {
   firstName?: string;
   lastName?: string;
   gender?: gender;
-  age?: Date;
+  birthday?: string;
 }
 export type UserUpdateResponse = Omit<AuthLoginResponse, "token">;
