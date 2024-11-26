@@ -5,11 +5,11 @@ import { asyncHandler } from "../middlewares/async-handler";
 import { UserUpdateBody, UserUpdateResponse } from "../types";
 
 async function updateUser(
-  req: Request<{ id: number }, unknown, UserUpdateBody>,
+  req: Request<{ userId: number }, unknown, UserUpdateBody>,
   res: Response<UserUpdateResponse>
 ) {
-  const { id } = req.params;
-  const user = await updateUserService(id, req.body);
+  const { userId } = req.params;
+  const user = await updateUserService(userId, req.body);
   res.status(200).json(user);
 }
 

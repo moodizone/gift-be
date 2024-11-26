@@ -3,9 +3,10 @@ import createHttpError from "http-errors";
 import jwt from "jsonwebtoken";
 
 import { extractSecret } from "../utils/auth";
+import { RequestCustom } from "../types/server";
 
 export async function authentication(
-  req: express.Request,
+  req: RequestCustom,
   res: express.Response,
   next: express.NextFunction
 ) {
@@ -21,17 +22,16 @@ export async function authentication(
     // invalid secret position
     if (!result) res.status(error.statusCode).json({ message: error.message });
     else {
-      // invalid token
       jwt.verify(result.token, result.secret, (err, decoded) => {
-        if (err || !decoded || typeof decoded === "string")
+        // invalid token
+        if (err || !decoded || typeof decoded === "string" || !decoded.id)
           res.status(error.statusCode).json({ message: error.message });
         // check expiration
-        else if (decoded.iat && decoded.exp && decoded.iat <= decoded.exp) {
-          // @ts-ignore --> attach userId to request
-          req.userId = decoded;
-          next();
-        } else {
+        else if (!decoded.iat || !decoded.exp || decoded.iat >= decoded.exp) {
           res.status(error.statusCode).json({ message: error.message });
+        } else {
+          req.userId = decoded.id;
+          next();
         }
       });
     }
