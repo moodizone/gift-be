@@ -1,6 +1,6 @@
 import express from "express";
 
-import { validateRequest } from "../middlewares/validate";
+import { validateBody } from "../middlewares/validate";
 import {
   createUserSchema,
   emailAvailabilitySchema,
@@ -10,15 +10,15 @@ import { usersController } from "../controllers/user";
 import { authController } from "../controllers/auth";
 
 const authRouter = express.Router();
-authRouter.post("/login", validateRequest(loginSchema), authController.login);
+authRouter.post("/login", validateBody(loginSchema), authController.login);
 authRouter.post(
   "/register",
-  validateRequest(createUserSchema),
+  validateBody(createUserSchema),
   authController.register
 );
 authRouter.post(
   "/email-availability",
-  validateRequest(emailAvailabilitySchema),
+  validateBody(emailAvailabilitySchema),
   authController.emailAvailability
 );
 
