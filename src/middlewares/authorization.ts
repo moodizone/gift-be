@@ -30,12 +30,11 @@ function checkAuthorization(ownership: OwnershipEnum) {
 
         if (requestedId !== userId) {
           res.status(forbidden.status).json({ message: forbidden.message });
+          return;
         }
-        break;
       }
     }
 
-    // If all checks pass, proceed
     next();
   };
 }

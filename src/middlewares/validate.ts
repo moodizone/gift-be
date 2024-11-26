@@ -12,10 +12,9 @@ export function validateBody(schema: ZodSchema<any>) {
   };
 }
 export function validateParams(schema: ZodSchema<any>) {
-  return (req: Request, _res: Response, next: NextFunction) => {
+  return (req: any, _res: Response, next: NextFunction) => {
     try {
-      const validatedParams = schema.parse(req.params);
-      req.params = validatedParams;
+      schema.parse(req.params);
       next();
     } catch (error) {
       next(error);
