@@ -4,7 +4,7 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { getUserByEmailService } from "./user";
 import { hashPassword, verifyPassword } from "../utils/hash";
 import { generateAccessToken } from "../utils/auth";
-import { AuthLoginResponse, AuthRegisterBody } from "../types";
+import { AuthLoginResponse, AuthRegisterBody, AuthRegisterResponse } from "../types";
 import { createUserQuery } from "../models/user";
 
 export async function authLoginService(
@@ -47,7 +47,7 @@ export async function authLoginService(
 export async function authRegisterService({
   password,
   email,
-}: AuthRegisterBody): Promise<AuthLoginResponse> {
+}: AuthRegisterBody): Promise<AuthRegisterResponse> {
   try {
     // encrypt password before insertion
     const hashedPassword = await hashPassword(password);
