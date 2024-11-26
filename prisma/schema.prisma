@@ -16,7 +16,6 @@ datasource db {
 
 model User {
   tel            String?        @unique(map: "tel") @db.VarChar(256)
-  name           String?        @db.VarChar(256)
   email          String         @unique(map: "email") @db.VarChar(256)
   password       String         @db.VarChar(256)
   role           userRole?      @default(user)
@@ -26,7 +25,9 @@ model User {
   profilePicture String?
   accountStatus  accountStatus? @default(active)
   language       language?      @default(fa)
-  age            DateTime?      @db.Timestamp(0)
+  birthday       DateTime?      @db.Timestamp(0)
+  firstName      String?        @db.VarChar(256)
+  lastName       String?        @db.VarChar(256)
   product        Product[]
   reviews        Review[]
 }
