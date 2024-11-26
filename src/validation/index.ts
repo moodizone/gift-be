@@ -13,7 +13,8 @@ const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
 z.setErrorMap(customErrorMap);
 
 const telSchema = z.string().min(3).max(256).optional();
-const nameSchema = z.string().max(256).optional();
+const firstNameSchema = z.string().max(256).optional();
+const lastNameSchema = z.string().max(256).optional();
 const emailSchema = z.string().email().max(256);
 const passwordSchema = z.string().min(6).max(256);
 const roleSchema = z.nativeEnum(userRole).optional();
@@ -23,11 +24,12 @@ const userIdSchema = z.number().int().positive();
 
 export const createUserSchema = z.object({
   tel: telSchema,
-  name: nameSchema,
+  firstName: firstNameSchema,
+  lastName: lastNameSchema,
   email: emailSchema,
   password: passwordSchema,
   gender: genderSchema,
-  age: ageSchema,
+  birthday: birthdaySchema,
   role: roleSchema,
 });
 export const loginSchema = z.object({
@@ -39,9 +41,10 @@ export const emailAvailabilitySchema = z.object({
 });
 export const updateUserSchema = z.object({
   tel: telSchema,
-  name: nameSchema,
+  firstName: firstNameSchema,
+  lastName: lastNameSchema,
   gender: genderSchema,
-  age: ageSchema,
+  birthday: birthdaySchema,
 });
 export const userParamSchema = z.object({
   userId: z.preprocess((val) => Number(val), userIdSchema),
