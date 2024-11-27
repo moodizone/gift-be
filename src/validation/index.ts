@@ -19,8 +19,32 @@ const emailSchema = z.string().email().max(256);
 const passwordSchema = z.string().min(6).max(256);
 const roleSchema = z.nativeEnum(userRole).optional();
 const genderSchema = z.nativeEnum(gender).optional();
-const ageSchema = z.number().int().positive().optional();
 const userIdSchema = z.number().int().positive();
+const dateSchema = z.string().datetime().pipe(z.coerce.date());
+const boundedDateSchema = dateSchema.superRefine((date, { path, addIssue }) => {
+  const fieldName = `${path[0]}`;
+
+  // reject future date
+  if (date > new Date()) {
+    addIssue({
+      code: z.ZodIssueCode.custom,
+      path,
+      message: `${fieldName} cannot be in the future`,
+    });
+  }
+
+  const hundredYearsAgo = new Date();
+  hundredYearsAgo.setFullYear(hundredYearsAgo.getFullYear() - 200);
+
+  // reject too old date
+  if (date < hundredYearsAgo) {
+    addIssue({
+      code: z.ZodIssueCode.custom,
+      path,
+      message: `${fieldName} cannot be more than 200 years ago`,
+    });
+  }
+});
 
 export const createUserSchema = z.object({
   tel: telSchema,
@@ -29,7 +53,7 @@ export const createUserSchema = z.object({
   email: emailSchema,
   password: passwordSchema,
   gender: genderSchema,
-  birthday: birthdaySchema,
+  birthday: dateSchema,
   role: roleSchema,
 });
 export const loginSchema = z.object({
@@ -44,7 +68,7 @@ export const updateUserSchema = z.object({
   firstName: firstNameSchema,
   lastName: lastNameSchema,
   gender: genderSchema,
-  birthday: birthdaySchema,
+  birthday: boundedDateSchema,
 });
 export const userParamSchema = z.object({
   userId: z.preprocess((val) => Number(val), userIdSchema),
