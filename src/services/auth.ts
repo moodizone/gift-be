@@ -42,6 +42,8 @@ export async function authLoginService(
         profilePicture,
         birthday,
         id,
+        bio,
+        address,
       } = user;
 
       return {
@@ -52,6 +54,8 @@ export async function authLoginService(
         gender,
         token,
         language,
+        bio,
+        address,
         profilePicture,
         birthday: dateToISO(birthday),
         id,
@@ -82,6 +86,8 @@ export async function authRegisterService({
       profilePicture,
       birthday,
       id,
+      bio,
+      address,
     } = newUser;
     return {
       tel,
@@ -89,6 +95,8 @@ export async function authRegisterService({
       lastName,
       email: _email,
       gender,
+      bio,
+      address,
       language,
       profilePicture,
       birthday: dateToISO(birthday),

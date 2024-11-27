@@ -31,11 +31,15 @@ export async function updateUserService(
     lastName,
     profilePicture,
     tel,
+    bio,
+    address,
   } = await updateUserQuery(id, {
     ...payload,
     birthday: ISOtoDate(payload.birthday),
   });
   return {
+    bio,
+    address,
     birthday: dateToISO(birthday),
     email,
     gender,
