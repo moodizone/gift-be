@@ -10,6 +10,7 @@ import {
   AuthRegisterResponse,
 } from "../types";
 import { createUserQuery } from "../models/user";
+import { dateToISO } from "../utils/date";
 
 export async function authLoginService(
   email: string,
@@ -52,7 +53,7 @@ export async function authLoginService(
         token,
         language,
         profilePicture,
-        birthday,
+        birthday: dateToISO(birthday),
         id,
       };
     }
@@ -90,7 +91,7 @@ export async function authRegisterService({
       gender,
       language,
       profilePicture,
-      birthday,
+      birthday: dateToISO(birthday),
       id,
       token,
     };

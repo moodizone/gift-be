@@ -6,6 +6,7 @@ import {
   updateUserQuery,
 } from "../models/user";
 import { UserUpdateBody, UserUpdateResponse } from "../types";
+import { dateToISO, ISOtoDate } from "../utils/date";
 
 export async function getUserByEmailService(email: string) {
   const result = await getUserByEmailQuery(email);
@@ -30,9 +31,12 @@ export async function updateUserService(
     lastName,
     profilePicture,
     tel,
-  } = await updateUserQuery(id, payload);
+  } = await updateUserQuery(id, {
+    ...payload,
+    birthday: ISOtoDate(payload.birthday),
+  });
   return {
-    birthday,
+    birthday: dateToISO(birthday),
     email,
     gender,
     id,

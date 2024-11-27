@@ -1,5 +1,6 @@
 import prisma from "../../prisma/client";
 import { AuthRegisterBody, UserUpdateBody } from "../types";
+import { UserUpdateQueryBody } from "../types/server";
 
 export async function createUserQuery({ email, password }: AuthRegisterBody) {
   const user = await prisma.user.create({
@@ -26,7 +27,7 @@ export async function getUserByIdQuery(id: number) {
   });
   return user;
 }
-export async function updateUserQuery(id: number, data: UserUpdateBody) {
+export async function updateUserQuery(id: number, data: UserUpdateQueryBody) {
   const user = await prisma.user.update({
     where: { id },
     data,
