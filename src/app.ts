@@ -33,7 +33,7 @@ app.use(
         ? "https://www.mojave-desert.ir"
         : "http://localhost:3006",
     ],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
