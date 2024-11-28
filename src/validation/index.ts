@@ -45,6 +45,24 @@ const boundedDateSchema = dateSchema.superRefine((date, { path, addIssue }) => {
     });
   }
 });
+const optionalBoundedDateSchema = z
+  .string()
+  .optional()
+  .refine((value) => {
+    if (!Boolean(value)) return true;
+
+    const { success } = boundedDateSchema.safeParse(value);
+    return success;
+  });
+  const optionalTelSchema = z
+  .string()
+  .optional()
+  .refine((value) => {
+    if (!Boolean(value)) return true;
+
+    const { success } = telSchema.safeParse(value);
+    return success;
+  });
 
 export const createUserSchema = z.object({
   tel: telSchema,
@@ -64,12 +82,13 @@ export const emailAvailabilitySchema = z.object({
   email: emailSchema,
 });
 export const updateUserSchema = z.object({
-  tel: telSchema,
+  tel: optionalTelSchema,
   firstName: firstNameSchema,
   lastName: lastNameSchema,
   gender: genderSchema,
-  birthday: boundedDateSchema,
+  birthday: optionalBoundedDateSchema,
 });
+
 export const userParamSchema = z.object({
   userId: z.preprocess((val) => Number(val), userIdSchema),
 });
