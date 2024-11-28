@@ -30,7 +30,7 @@ export async function authentication(
         else if (!decoded.iat || !decoded.exp || decoded.iat >= decoded.exp) {
           res.status(error.statusCode).json({ message: error.message });
         } else {
-          req.userId = decoded.id;
+          req.userId = Number(decoded.id);
           next();
         }
       });

@@ -12,6 +12,10 @@ export async function getUserByEmailService(email: string) {
   const result = await getUserByEmailQuery(email);
   return result;
 }
+export async function getUserByIdService(id: number) {
+  const result = await getUserByIdQuery(id);
+  return result;
+}
 export async function updateUserService(
   id: number,
   payload: UserUpdateBody

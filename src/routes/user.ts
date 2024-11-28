@@ -13,5 +13,6 @@ userRouter.patch(
   authorization.user,
   usersController.updateUser
 );
+userRouter.get("/me", usersController.me);
 
 export default userRouter;

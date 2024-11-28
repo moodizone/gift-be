@@ -19,7 +19,7 @@ const emailSchema = z.string().email().max(256);
 const passwordSchema = z.string().min(6).max(256);
 const roleSchema = z.nativeEnum(userRole).optional();
 const genderSchema = z.nativeEnum(gender).optional();
-const userIdSchema = z.number().int().positive();
+export const userIdSchema = z.number().int().positive();
 const dateSchema = z.string().datetime().pipe(z.coerce.date());
 const boundedDateSchema = dateSchema.superRefine((date, { path, addIssue }) => {
   const fieldName = `${path[0]}`;

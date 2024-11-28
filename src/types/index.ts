@@ -39,3 +39,4 @@ export interface UserUpdateBody {
   address?: string;
 }
 export type UserUpdateResponse = Omit<AuthLoginResponse, "token">;
+export type UserMeResponse = Omit<AuthLoginResponse, "token">;
