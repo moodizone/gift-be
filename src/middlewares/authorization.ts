@@ -27,8 +27,9 @@ function checkAuthorization(ownership: OwnershipEnum) {
       case OwnershipEnum.user: {
         const requestedId = (req as RequestCustom<{ userId: number }>).params
           .userId;
+        const convertToNumber = Number(requestedId);
 
-        if (requestedId !== userId) {
+        if (convertToNumber !== userId) {
           res.status(forbidden.status).json({ message: forbidden.message });
           return;
         }
