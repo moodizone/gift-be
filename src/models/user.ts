@@ -34,3 +34,10 @@ export async function updateUserQuery(id: number, data: UserUpdateQueryBody) {
   });
   return user;
 }
+export async function updateUserPasswordQuery(id: number, password: string) {
+  const user = await prisma.user.update({
+    where: { id },
+    data: { password },
+  });
+  return user;
+}

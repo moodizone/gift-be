@@ -1,11 +1,17 @@
 import { Request, Response } from "express";
 
-import { getUserByIdService, updateUserService } from "../services/user";
+import {
+  getUserByIdService,
+  updateUserPasswordService,
+  updateUserService,
+} from "../services/user";
 import { asyncHandler } from "../middlewares/async-handler";
 import {
   ErrorType,
   UserMeResponse,
   UserUpdateBody,
+  UserUpdatePasswordBody,
+  UserUpdatePasswordResponse,
   UserUpdateResponse,
 } from "../types";
 import { RequestCustom } from "../types/server";
@@ -25,8 +31,6 @@ async function me(
   req: RequestCustom,
   res: Response<UserMeResponse | ErrorType>
 ) {
-  console.log(typeof req.userId);
-
   const error = createHttpError.Unauthorized();
   const { success } = userIdSchema.safeParse(req.userId);
 
@@ -65,8 +69,17 @@ async function me(
   }
   res.status(error.status).json({ message: error.message });
 }
+export async function updatePassword(
+  req: Request<{ userId: string }, unknown, UserUpdatePasswordBody>,
+  res: Response<UserUpdatePasswordResponse>
+) {
+  const { userId } = req.params;
+  await updateUserPasswordService(Number(userId), req.body);
+  res.status(200).json({});
+}
 
 export const usersController = {
   updateUser: asyncHandler(updateUser),
   me: asyncHandler(me),
+  changePassword: asyncHandler(updatePassword),
 };

@@ -40,3 +40,8 @@ export interface UserUpdateBody {
 }
 export type UserUpdateResponse = Omit<AuthLoginResponse, "token">;
 export type UserMeResponse = Omit<AuthLoginResponse, "token">;
+export type UserUpdatePasswordResponse = {};
+export interface UserUpdatePasswordBody {
+  oldPassword: string;
+  newPassword: string;
+}
