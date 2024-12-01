@@ -54,7 +54,7 @@ const optionalBoundedDateSchema = z
     const { success } = boundedDateSchema.safeParse(value);
     return success;
   });
-  const optionalTelSchema = z
+const optionalTelSchema = z
   .string()
   .optional()
   .refine((value) => {
@@ -88,7 +88,10 @@ export const updateUserSchema = z.object({
   gender: genderSchema,
   birthday: optionalBoundedDateSchema,
 });
-
 export const userParamSchema = z.object({
   userId: z.preprocess((val) => Number(val), userIdSchema),
+});
+export const userPasswordSchema = z.object({
+  newPassword: passwordSchema,
+  oldPassword: passwordSchema,
 });
