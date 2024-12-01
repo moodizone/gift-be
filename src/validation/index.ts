@@ -65,13 +65,13 @@ const optionalBoundedDateSchema = z
   });
 
 export const createUserSchema = z.object({
-  tel: telSchema,
+  tel: optionalTelSchema,
   firstName: firstNameSchema,
   lastName: lastNameSchema,
   email: emailSchema,
   password: passwordSchema,
   gender: genderSchema,
-  birthday: dateSchema,
+  birthday: optionalBoundedDateSchema,
   role: roleSchema,
 });
 export const loginSchema = z.object({
