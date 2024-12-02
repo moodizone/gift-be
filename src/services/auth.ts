@@ -4,10 +4,18 @@ import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
 import { getUserByEmailService } from "./user";
 import { hashPassword, verifyPassword } from "../utils/hash";
 import { generateAccessToken } from "../utils/auth";
-import { AuthLoginResponse, AuthRegisterBody } from "../types";
+import {
+  AuthLoginResponse,
+  AuthRegisterBody,
+  AuthRegisterResponse,
+} from "../types";
 import { createUserQuery } from "../models/user";
+import { dateToISO } from "../utils/date";
 
-export async function authLoginService(email: string, password: string) {
+export async function authLoginService(
+  email: string,
+  password: string
+): Promise<AuthLoginResponse> {
   const user = await getUserByEmailService(email);
 
   // there is no user associated with provided email
@@ -24,16 +32,41 @@ export async function authLoginService(email: string, password: string) {
       const token = generateAccessToken(`${user.id}`);
 
       // filter sensitive data
-      const { password, createAt, role, accountStatus, ...others } = user;
+      const {
+        tel,
+        firstName,
+        lastName,
+        email,
+        gender,
+        language,
+        profilePicture,
+        birthday,
+        id,
+        bio,
+        address,
+      } = user;
 
-      return { ...others, token };
+      return {
+        tel,
+        firstName,
+        lastName,
+        email,
+        gender,
+        token,
+        language,
+        bio,
+        address,
+        profilePicture,
+        birthday: dateToISO(birthday),
+        id,
+      };
     }
   }
 }
 export async function authRegisterService({
   password,
   email,
-}: AuthRegisterBody): Promise<AuthLoginResponse> {
+}: AuthRegisterBody): Promise<AuthRegisterResponse> {
   try {
     // encrypt password before insertion
     const hashedPassword = await hashPassword(password);
@@ -44,13 +77,32 @@ export async function authRegisterService({
     });
     const token = generateAccessToken(`${newUser.id}`);
     const {
-      password: _pwd,
-      createAt,
-      role,
-      accountStatus,
-      ...others
+      tel,
+      firstName,
+      lastName,
+      email: _email,
+      gender,
+      language,
+      profilePicture,
+      birthday,
+      id,
+      bio,
+      address,
     } = newUser;
-    return { ...others, token };
+    return {
+      tel,
+      firstName,
+      lastName,
+      email: _email,
+      gender,
+      bio,
+      address,
+      language,
+      profilePicture,
+      birthday: dateToISO(birthday),
+      id,
+      token,
+    };
   } catch (error) {
     if (error instanceof PrismaClientKnownRequestError) {
       // unique violation rule

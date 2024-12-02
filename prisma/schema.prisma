@@ -16,17 +16,104 @@ datasource db {
 
 model User {
   tel            String?        @unique(map: "tel") @db.VarChar(256)
-  name           String?        @db.VarChar(256)
   email          String         @unique(map: "email") @db.VarChar(256)
   password       String         @db.VarChar(256)
-  role           userRole       @default(user)
+  role           userRole?      @default(user)
   gender         gender?
   id             Int            @id @default(autoincrement())
-  createAt       DateTime?      @default(now()) @db.Timestamp(6)
-  age            Int?
+  createAt       DateTime?      @default(now()) @db.Timestamp(0)
   profilePicture String?
   accountStatus  accountStatus? @default(active)
   language       language?      @default(fa)
+  birthday       DateTime?      @db.Timestamp(0)
+  firstName      String?        @db.VarChar(256)
+  lastName       String?        @db.VarChar(256)
+  address        String?        @db.VarChar(255)
+  bio            String?        @db.VarChar(500)
+  product        Product[]
+  reviews        Review[]
+}
+
+model Product {
+  id              Int            @id @default(autoincrement())
+  title           String         @db.VarChar(256)
+  description     String?
+  images          Json
+  priceId         Float?
+  sourceId        Int?
+  sourceProductId String?
+  scrapedAt       DateTime?
+  isActive        Boolean        @default(true)
+  categoryId      Int?
+  stock           Int?
+  rating          Float?
+  discount        Float?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  createBy        Int
+  priceHistory    PriceHistory[]
+  category        Category?      @relation(fields: [categoryId], references: [id])
+  creator         User           @relation(fields: [createBy], references: [id])
+  source          Source?        @relation(fields: [sourceId], references: [id])
+  tags            ProductTag[]
+  reviews         Review[]
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  productId Int
+  author    Int
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  isChecked Boolean  @default(false)
+  user      User     @relation(fields: [author], references: [id])
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+model Category {
+  id              Int        @id @default(autoincrement())
+  name            String
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  subCategories   Int[]
+  superCategory   Int?
+  parentCategory  Category?  @relation("CategoryToSubcategory", fields: [superCategory], references: [id])
+  childCategories Category[] @relation("CategoryToSubcategory")
+  products        Product[]
+}
+
+model Source {
+  id            Int       @id @default(autoincrement())
+  name          String
+  url           String
+  lastScrapedAt DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  products      Product[]
+}
+
+model PriceHistory {
+  id         Int      @id @default(autoincrement())
+  productId  Int
+  price      Float
+  recordedAt DateTime @default(now())
+  product    Product  @relation(fields: [productId], references: [id])
+}
+
+model Tag {
+  id       Int          @id @default(autoincrement())
+  label    String
+  products ProductTag[]
+}
+
+model ProductTag {
+  productId Int
+  tagId     Int
+  product   Product @relation(fields: [productId], references: [id])
+  tag       Tag     @relation(fields: [tagId], references: [id])
+
+  @@id([tagId, productId])
 }
 
 enum gender {

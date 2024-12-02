@@ -28,8 +28,12 @@ app.use("/assets", express.static(path.join(__dirname, "public")));
 // enable CORS for a specific origin (Next.js app on port 3006)
 app.use(
   cors({
-    origin: "http://localhost:3006",
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    origin: [
+      process.env.NODE_ENV === "production"
+        ? "https://www.mojave-desert.ir"
+        : "http://localhost:3006",
+    ],
+    methods: ["GET", "POST", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
