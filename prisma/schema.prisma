@@ -35,26 +35,26 @@ model User {
 }
 
 model Product {
-  id              Int            @id @default(autoincrement())
-  title           String         @db.VarChar(256)
+  id              Int          @id @default(autoincrement())
+  title           String       @db.VarChar(256)
   description     String?
-  images          Json
-  priceId         Float?
-  sourceId        Int?
-  sourceProductId String?
-  scrapedAt       DateTime?
-  isActive        Boolean        @default(true)
+  sourceProductId String?      @unique
+  isActive        Boolean      @default(true)
   categoryId      Int?
   stock           Int?
   rating          Float?
   discount        Float?
-  createdAt       DateTime       @default(now())
-  updatedAt       DateTime       @updatedAt
+  createdAt       DateTime     @default(now())
   createBy        Int
-  priceHistory    PriceHistory[]
-  category        Category?      @relation(fields: [categoryId], references: [id])
-  creator         User           @relation(fields: [createBy], references: [id])
-  source          Source?        @relation(fields: [sourceId], references: [id])
+  alt             String?
+  pics            String[]
+  price           Float?
+  rateCount       Int?
+  sourceLink      String?
+  sourceName      String?
+  thumbnail       String?
+  category        Category?    @relation(fields: [categoryId], references: [id])
+  creator         User         @relation(fields: [createBy], references: [id])
   tags            ProductTag[]
   reviews         Review[]
 }
@@ -75,30 +75,12 @@ model Category {
   id              Int        @id @default(autoincrement())
   name            String
   createdAt       DateTime   @default(now())
-  updatedAt       DateTime   @updatedAt
+  updatedAt       DateTime?  @updatedAt
   subCategories   Int[]
   superCategory   Int?
   parentCategory  Category?  @relation("CategoryToSubcategory", fields: [superCategory], references: [id])
   childCategories Category[] @relation("CategoryToSubcategory")
   products        Product[]
-}
-
-model Source {
-  id            Int       @id @default(autoincrement())
-  name          String
-  url           String
-  lastScrapedAt DateTime?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
-  products      Product[]
-}
-
-model PriceHistory {
-  id         Int      @id @default(autoincrement())
-  productId  Int
-  price      Float
-  recordedAt DateTime @default(now())
-  product    Product  @relation(fields: [productId], references: [id])
 }
 
 model Tag {
