@@ -10,3 +10,6 @@ sdk.ts
 prisma/interfaces.ts
 
 .vscode
+
+# scrapped data
+src/seed/data
