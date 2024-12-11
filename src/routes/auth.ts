@@ -6,7 +6,6 @@ import {
   emailAvailabilitySchema,
   loginSchema,
 } from "../validation";
-import { usersController } from "../controllers/user";
 import { authController } from "../controllers/auth";
 
 const authRouter = express.Router();
