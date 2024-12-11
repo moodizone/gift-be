@@ -45,3 +45,9 @@ export interface UserUpdatePasswordBody {
   oldPassword: string;
   newPassword: string;
 }
+export interface GetCategoryResponse {
+  id: number;
+  title: string;
+  subCategories: number[];
+  superCategory: number | null;
+}
