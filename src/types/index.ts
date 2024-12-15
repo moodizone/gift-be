@@ -51,3 +51,19 @@ export interface GetCategoryResponse {
   subCategories: number[];
   superCategory: number | null;
 }
+export enum ProductSortEnum {
+  expensive = 1,
+  cheap,
+  commented,
+  new,
+}
+export enum RatingEnum {
+  low = 1,
+  medium,
+  high,
+}
+export enum PerPageEnum {
+  few = 12,
+  regular = 24,
+  many = 48,
+}
