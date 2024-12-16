@@ -52,18 +52,37 @@ export interface GetCategoryResponse {
   superCategory: number | null;
 }
 export enum ProductSortEnum {
-  expensive = 1,
-  cheap,
-  commented,
-  new,
+  expensive = "1",
+  cheap = "2",
+  commented = "3",
+  new = "4",
 }
-export enum RatingEnum {
-  low = 1,
-  medium,
-  high,
+export enum ProductRatingEnum {
+  low = "1", // [0:2] stars
+  medium = "2", // (2:4) stars
+  high = "3", // [4:5] stars
 }
-export enum PerPageEnum {
-  few = 12,
-  regular = 24,
-  many = 48,
+export enum LimitEnum {
+  few = '12',
+  regular = '24',
+  many = '48',
+}
+export interface ProductType {
+  id: number;
+  title: string;
+  description: string | null;
+  categoryId: number | null;
+  stock: number | null;
+  rating: number | null;
+  discount: number | null;
+  alt: string | null;
+  pics: string[];
+  price: number | null;
+  rateCount: number | null;
+  thumbnail: string | null;
+  sourceLink: string | null;
+}
+export interface GetProductResponse {
+  list: ProductType[];
+  count: number;
 }
