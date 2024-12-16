@@ -15,9 +15,11 @@ interface DataType {
   dp: string;
 }
 
+
+// npx ts-node src/seed/product.ts
 async function transform_data() {
   const rawData = fs.readFileSync(
-    "/home/moodi/work/gift-be/src/seed/data/pet-supplies.json",
+    "/home/moodi/work/gift-be/src/seed/data/automotive.json",
     "utf-8"
   );
   const data = JSON.parse(rawData);
@@ -36,7 +38,7 @@ async function transform_data() {
       title,
       price: _price,
       sourceProductId: dp,
-      categoryId: 9,
+      categoryId: 2,
       stock: 5,
       rating: rate,
       discount: _discount,
