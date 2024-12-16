@@ -128,5 +128,11 @@ export const productQuerySchema = z.object({
       return success;
     })
     .optional(),
-  limit: limitSchema,
+  limit: z
+    .string()
+    .refine((v) => {
+      const { success } = limitSchema.safeParse(Number(v));
+      return success;
+    })
+    .optional(),
 });

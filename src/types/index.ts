@@ -63,9 +63,9 @@ export enum ProductRatingEnum {
   high = "3", // [4:5] stars
 }
 export enum LimitEnum {
-  few = '12',
-  regular = '24',
-  many = '48',
+  few = 12,
+  regular = 24,
+  many = 48,
 }
 export interface ProductType {
   id: number;
@@ -85,4 +85,6 @@ export interface ProductType {
 export interface GetProductResponse {
   list: ProductType[];
   count: number;
+  pageNumber: number;
+  perPage: LimitEnum;
 }

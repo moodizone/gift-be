@@ -1,6 +1,10 @@
 import { z } from "zod";
 
-import { fallbackPageNumber, productQuerySchema } from "../validation";
+import {
+  fallbackLimit,
+  fallbackPageNumber,
+  productQuerySchema,
+} from "../validation";
 import {
   GetProductResponse,
   ProductRatingEnum,
@@ -35,7 +39,7 @@ export async function getProductService({
 }: z.infer<typeof productQuerySchema>): Promise<GetProductResponse> {
   // transform datatypes
   const safePage = page ? Number(page) : fallbackPageNumber;
-  const safeLimit = Number(limit);
+  const safeLimit = limit ? Number(limit) : fallbackLimit;
   const safeCategories = (() => {
     if (typeof category === "string") {
       return [Number(category)];
@@ -133,5 +137,7 @@ export async function getProductService({
   return {
     count,
     list: transformedList,
+    perPage: safeLimit,
+    pageNumber: safePage,
   };
 }

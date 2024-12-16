@@ -19,7 +19,7 @@ async function getProduct(
   res: express.Response<GetProductResponse>
 ) {
   const {
-    limit = fallbackLimit,
+    limit = `${fallbackLimit}`,
     page = `${fallbackPageNumber}`,
     category,
     rate,
