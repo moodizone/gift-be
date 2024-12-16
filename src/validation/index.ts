@@ -1,6 +1,8 @@
 import { gender, userRole } from "@prisma/client";
 import { z } from "zod";
 
+import { LimitEnum, ProductRatingEnum, ProductSortEnum } from "../types";
+
 const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
   // prevent printing list of enums as within error message
   if (issue.code === z.ZodIssueCode.invalid_enum_value) {
@@ -9,9 +11,10 @@ const customErrorMap: z.ZodErrorMap = (issue, ctx) => {
 
   return { message: ctx.defaultError };
 };
-
 z.setErrorMap(customErrorMap);
 
+export const fallbackPageNumber = 1;
+export const fallbackLimit = LimitEnum.few;
 const telSchema = z.string().min(3).max(256).optional();
 const firstNameSchema = z.string().max(256).optional();
 const lastNameSchema = z.string().max(256).optional();
@@ -20,7 +23,10 @@ const passwordSchema = z.string().min(6).max(256);
 const roleSchema = z.nativeEnum(userRole).optional();
 const genderSchema = z.nativeEnum(gender).optional();
 export const userIdSchema = z.number().int().positive();
+const categorySchema = z.number().int().positive();
 const dateSchema = z.string().datetime().pipe(z.coerce.date());
+const pageSchema = z.number().int().positive();
+const limitSchema = z.nativeEnum(LimitEnum).optional().default(fallbackLimit);
 const boundedDateSchema = dateSchema.superRefine((date, { path, addIssue }) => {
   const fieldName = `${path[0]}`;
 
@@ -94,4 +100,33 @@ export const userParamSchema = z.object({
 export const userPasswordSchema = z.object({
   newPassword: passwordSchema,
   oldPassword: passwordSchema,
+});
+export const productQuerySchema = z.object({
+  category: z
+    .union([
+      z.string().refine((v) => {
+        const { success } = categorySchema.safeParse(Number(v));
+        return success;
+      }),
+      z
+        .string()
+        .array()
+        .refine((v) => {
+          const numericArray = v.map(Number);
+          const { success } = z.array(categorySchema).safeParse(numericArray);
+          return success;
+        }),
+    ])
+    .optional(),
+  rate: z.nativeEnum(ProductRatingEnum).optional(),
+  sort: z.nativeEnum(ProductSortEnum).optional(),
+  term: z.string().min(3).max(256).optional(),
+  page: z
+    .string()
+    .refine((v) => {
+      const { success } = pageSchema.safeParse(Number(v));
+      return success;
+    })
+    .optional(),
+  limit: limitSchema,
 });
