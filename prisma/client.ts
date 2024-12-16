@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 
-const isDev = process.env.NODE_Env === "development";
+const isDev = process.env.NODE_ENV === "development";
 
 // ensure that PrismaClient is instantiated only once for the app lifecycle.
 const prisma = new PrismaClient({
