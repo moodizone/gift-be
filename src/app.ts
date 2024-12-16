@@ -10,6 +10,8 @@ import { errorHandler } from "./middlewares/error-handler";
 import { authentication } from "./middlewares/authenticate";
 import { appPort } from "./configs";
 import authRouter from "./routes/auth";
+import categoryRouter from "./routes/category";
+import productRouter from "./routes/product";
 
 const app = express();
 
@@ -40,6 +42,8 @@ app.use(
 
 // page routes
 app.use("/api/auth", authRouter);
+app.use("/api/category", authentication, categoryRouter);
+app.use("/api/product", authentication, productRouter);
 app.use("/api/user", authentication, userRouter);
 
 // wild card routes
