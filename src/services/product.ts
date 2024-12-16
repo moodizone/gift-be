@@ -98,10 +98,17 @@ export async function getProductService({
   //================================
   // Pagination
   //================================
-  const skip = (safePage - 1) * safeLimit;
-  const take = safeLimit;
+  const count = await getProductCountQuery({ where });
+  const maxPageNumber = Math.max(Math.ceil(count / safeLimit), 1);
+  const safestPage = Math.min(safePage, maxPageNumber);
+  const safeSkip = (safestPage - 1) * safeLimit;
 
-  const list = await getProductQuery({ where, orderBy, skip, take });
+  const list = await getProductQuery({
+    where,
+    orderBy,
+    skip: safeSkip,
+    take: safeLimit,
+  });
   const transformedList: ProductType[] = list.map(
     ({
       id,
@@ -133,11 +140,11 @@ export async function getProductService({
       thumbnail,
     })
   );
-  const count = await getProductCountQuery({ where });
+
   return {
     count,
     list: transformedList,
     perPage: safeLimit,
-    pageNumber: safePage,
+    pageNumber: safestPage,
   };
 }
