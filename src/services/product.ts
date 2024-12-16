@@ -46,25 +46,43 @@ export async function getProductService({
   })();
   const ratingCondition = getRatingCondition(rate);
 
+  //================================
+  // filters
+  //================================
   const where: any = {
     isActive: true,
   };
-
-  // filters
   if (ratingCondition) {
-    where.rating = ratingCondition;
+    where.rating = {
+      ...ratingCondition,
+      not: null,
+    };
   }
   if (category) where.categoryId = { in: safeCategories };
   if (term) where.title = { contains: term, mode: "insensitive" };
 
-  // sort
+  //================================
+  // Sort
+  //================================
   const orderBy = (() => {
     switch (sort) {
       case ProductSortEnum.cheap:
+        where.price = {
+          ...where.price,
+          not: null,
+        };
         return { price: "asc" };
       case ProductSortEnum.expensive:
+        where.price = {
+          ...where.price,
+          not: null,
+        };
         return { price: "desc" };
       case ProductSortEnum.commented:
+        where.rateCount = {
+          ...where.rateCount,
+          not: null,
+        };
         return { rateCount: "desc" };
       case ProductSortEnum.new:
         return { createdAt: "desc" };
@@ -73,11 +91,11 @@ export async function getProductService({
     }
   })();
 
-  // pagination
+  //================================
+  // Pagination
+  //================================
   const skip = (safePage - 1) * safeLimit;
   const take = safeLimit;
-
-  console.log(where, orderBy, skip, take);
 
   const list = await getProductQuery({ where, orderBy, skip, take });
   const transformedList: ProductType[] = list.map(

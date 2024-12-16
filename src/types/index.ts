@@ -52,8 +52,8 @@ export interface GetCategoryResponse {
   superCategory: number | null;
 }
 export enum ProductSortEnum {
-  expensive = "1",
-  cheap = "2",
+  cheap = "1",
+  expensive = "2",
   commented = "3",
   new = "4",
 }
